@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Answer;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,6 +14,12 @@ return new class extends Migration
     {
         Schema::create('embeddings', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignIdFor(Answer::class)->constrained()->cascadeOnDelete();
+
+            $table->json('answer_embedding')->nullable(); //embedded student answer
+            $table->float('similarity_score')->nullable();
+
             $table->timestamps();
         });
     }

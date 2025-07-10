@@ -16,8 +16,17 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
 
             $table->id();
-            $table->timestamps();
 
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Classroom::class)->nullable()->default(null)->constrained()->nullOnDelete();
+
+            $table->string('name');
+            $table->string('nis');
+            $table->enum('gender', ['Laki-Laki', 'Perempuan']);
+            $table->date('born_date');
+            $table->string('address');
+
+            $table->timestamps();
         });
     }
 
