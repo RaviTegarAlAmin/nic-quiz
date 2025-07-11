@@ -9,4 +9,8 @@ class Exam extends Model
 {
     /** @use HasFactory<\Database\Factories\ExamFactory> */
     use HasFactory;
+
+    //Static Variables
+    public static array $status = ['finished', 'on hold', 'not started'];
+    public static array $type = ['multiple choice', 'essay'];
 }
