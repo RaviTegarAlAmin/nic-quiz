@@ -17,7 +17,10 @@ class StudentFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'nis' => fake()->numberBetween(00000000,999999999),
+            'born_date' => fake()->dateTimeBetween('-14 years', '-12 years'),
+            'address' => fake()->address()
+
         ];
     }
 }
