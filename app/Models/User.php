@@ -16,6 +16,10 @@ class User extends Authenticatable
         return $this->hasOne(Student::class);
     }
 
+    public function userClassroom(){
+        return $this->hasOneThrough(Classroom::class, Student::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *
