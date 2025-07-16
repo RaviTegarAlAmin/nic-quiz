@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Exam;
+use App\Models\Question;
 use App\Models\Teacher;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -20,7 +21,7 @@ return new class extends Migration
             $table->foreignIdFor(Teacher::class)->constrained()->cascadeOnDelete();
 
             $table->text('question');
-            $table->enum('type', Exam::$type);
+            $table->enum('type', Question::$type); //Exam::$type before
             $table->unsignedInteger('weight');
             $table->text('ref_answer');
             $table->json('ref_answer_embed'); //embedded teacher reference answer

@@ -21,5 +21,11 @@ class Classroom extends Model
         return $this->hasMany(Student::class);
     }
 
+    public function courseClassrooms() : HasMany {
+        return $this->hasMany(CourseClassroom::class);
+    }
 
+    public function courses() {
+        return $this->belongsToMany(Course::class, 'course_classrooms');
+    }
 }

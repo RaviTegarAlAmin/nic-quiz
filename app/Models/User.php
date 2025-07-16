@@ -12,13 +12,23 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    public function student(){
+    public function student()
+    {
         return $this->hasOne(Student::class);
     }
 
-    public function userClassroom(){
-        return $this->hasOneThrough(Classroom::class, Student::class);
+    public function admin()
+    {
+        return $this->hasOne(Admin::class);
     }
+
+    public function teacher()
+    {
+        return $this->hasOne(Teacher::class);
+    }
+
+
+
 
     /**
      * The attributes that are mass assignable.
