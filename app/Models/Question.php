@@ -11,4 +11,6 @@ class Question extends Model
     use HasFactory;
 
     public static array $type = ['multiple_choice', 'essay'];
+
+
 }

@@ -14,6 +14,8 @@ class Course extends Model
 
     protected $fillable =['title'];
 
+    public static array $courses = ['IPA', 'IPS', 'Bahasa Indonesia', 'Bahasa Inggris', 'PPKN', 'SBK'];
+
     public function courseClasrooms() :HasMany {
         return $this->hasMany(CourseClassroom::class);
     }
@@ -30,6 +32,6 @@ class Course extends Model
         return $this->belongsToMany(Classroom::class, 'course_classrooms');
     }
     public function teachers() :BelongsToMany {
-        return $this->belongsToMany(Teacher::class. 'teachings');
+        return $this->belongsToMany(Teacher::class, 'teachings')->withTimestamps();
     }
 }

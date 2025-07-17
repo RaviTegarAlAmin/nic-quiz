@@ -1,3 +1,5 @@
-<div>
-    This is Teacher Dashboard
-</div>
+@extends('layout.main')
+
+@section('main-content')
+    This is teacher dashboard
+@endsection

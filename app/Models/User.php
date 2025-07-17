@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -26,6 +27,24 @@ class User extends Authenticatable
     {
         return $this->hasOne(Teacher::class);
     }
+
+    //Role checking function
+
+    public function isStudent(): bool
+    {
+        return $this->student()->exists();
+    }
+
+    public function isTeacher(): bool
+    {
+        return $this->teacher()->exists();
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->admin()->exists();
+    }
+
 
 
 

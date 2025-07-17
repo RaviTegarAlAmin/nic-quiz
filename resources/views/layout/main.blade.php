@@ -28,8 +28,11 @@
             </a>
 
             <!-- Side Bar -->
-            @include('sidebar.student')
-
+            @if (auth()->user()->student)
+                @include('sidebar.student')
+            @elseif (auth()->user()->teacher)
+                @include('sidebar.teacher')
+            @endif
 
             <!-- Profile Menu  -->
             <x-profile></x-profile>

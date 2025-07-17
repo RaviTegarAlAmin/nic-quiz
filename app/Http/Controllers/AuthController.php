@@ -43,7 +43,16 @@ class AuthController extends Controller
 
             return redirect()->route('dashboard.student');
 
+        } else if ($teacher && Hash::check($credentials['password'], $teacher->user->password)) {
+            $user = $teacher->user()->first();
+            Auth::login($user, $credentials['remember']??false);
+
+            $request->session()->regenerate();
+
+            return redirect()->route('dashboard.teacher');
         }
+
+
 
         return redirect()->back()
             ->with('error', 'username atau password anda salah');

@@ -17,7 +17,10 @@ class TeacherFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'nip' => fake()->randomNumber('9', true),
+            'gender' => fake()->randomElement(['Laki-Laki', 'Perempuan']),
+            'born_date' => fake()->dateTimeBetween('-65 years', '-22 years'),
+            'address' => fake()->address()
         ];
     }
 }

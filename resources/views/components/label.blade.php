@@ -1,3 +1,4 @@
-<div class="mb-2 text-base">
+<div {{ $attributes->class([' font-extrabold text-sm text-secondary-400']) }}
+>
     {{ $slot }}
 </div>

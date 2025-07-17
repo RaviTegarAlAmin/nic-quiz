@@ -17,11 +17,11 @@ class Teacher extends Model
     }
 
     public function courses() {
-        return $this->belongsToMany(Course::class,'teachings');
+        return $this->belongsToMany(Course::class,'teachings')->withTimestamps();
     }
 
     public function user(){
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function questions(){

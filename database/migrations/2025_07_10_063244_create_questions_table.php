@@ -22,7 +22,7 @@ return new class extends Migration
 
             $table->text('question');
             $table->enum('type', Question::$type); //Exam::$type before
-            $table->unsignedInteger('weight');
+            $table->unsignedInteger('weight')   ;
             $table->text('ref_answer');
             $table->json('ref_answer_embed'); //embedded teacher reference answer
 

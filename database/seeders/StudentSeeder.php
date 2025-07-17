@@ -27,7 +27,7 @@ class StudentSeeder extends Seeder
                 if ($user->id % 2 == 0) {
                     Student::factory()->create(
                         [
-                            'name' => fake()->name('male'),
+                            'name' => $user->name,
                             'user_id' => $user->id,
                             'classroom_id' => $classroom->id,
                             'gender' => 'Laki-Laki',
@@ -37,7 +37,7 @@ class StudentSeeder extends Seeder
                 } else {
                     Student::factory()->create(
                         [
-                            'name' => fake()->name('female'),
+                            'name' => $user->name,
                             'user_id' => $user->id,
                             'classroom_id' => $classroom->id,
                             'gender' => 'Perempuan',

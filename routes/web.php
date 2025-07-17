@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExamController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -26,5 +27,11 @@ Route::middleware('auth')->group(function () {
     Route::get('student/dashboard', [DashboardController::class, 'studentDashboard'])->name('dashboard.student');
 
     //Student Route
-    Route::resource('classrooms', ClassroomController::class)->only('show');
+    Route::resource('student/classrooms', ClassroomController::class)->only('show');
+    Route::get('student/exams', [ExamController::class, 'indexStudent'])->name('exams.student');
+
+    //Teacher Route
+    Route::get('teacher/exams',[ExamController::class, 'indexTeacher'])->name('exams.teacher');
+    Route::resource('teacher/exams',ExamController::class)->except('index');
+
 });
