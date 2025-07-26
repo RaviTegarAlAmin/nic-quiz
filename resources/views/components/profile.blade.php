@@ -6,9 +6,9 @@
                     <img src="https://penguinui.s3.amazonaws.com/component-assets/avatar-7.webp"
                         class="size-8 object-cover rounded-sm" alt="avatar" aria-hidden="true" />
                     <div class="flex flex-col">
-                        <span class="text-sm font-bold text-neutral-900 dark:text-white">Alex Martinez</span>
+                        <span class="text-sm font-bold text-neutral-900 dark:text-white">{{ auth()->user()->name }}</span>
                         <span class="w-32 overflow-hidden text-ellipsis text-xs md:w-36"
-                            aria-hidden="true">@alexmartinez</span>
+                            aria-hidden="true">{{ auth()->user()->teacher->nip }}</span>
                         <span class="sr-only">profile settings</span>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none"

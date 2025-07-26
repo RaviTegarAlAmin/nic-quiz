@@ -48,7 +48,15 @@ class ExamController extends Controller
      */
     public function create()
     {
-        return view('exam.create');
+        $teachings = auth()->user()->teacher->teachings()->get();
+        $courses = auth()->user()->teacher->courses;
+
+
+
+        return view('exam.create', [
+            'teachings' => $teachings,
+            'courses' => $courses
+        ]);
     }
 
     /**

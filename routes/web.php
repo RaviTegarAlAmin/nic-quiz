@@ -14,12 +14,14 @@ Route::get('/', function () {
 
 Route::get('login', [AuthController::class, 'loginForm'])->name('login');
 Route::get('login/admin', [AuthController::class, 'adminLoginForm'])->name('login.admin');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('login', [AuthController::class, 'login'])->name('login.store');
 Route::post('login/admin', [AuthController::class, 'adminLogin'])->name('login.admin.store');
-Route::post('logout',[AuthController::class, 'logout'])->name('logout');
-
 
 Route::middleware('auth')->group(function () {
+
+    //Login
+
 
     //Dashboard Route
     Route::get('admin/dashboard', [DashboardController::class, 'adminDashboard'])->name('dashboard.admin');
@@ -31,7 +33,6 @@ Route::middleware('auth')->group(function () {
     Route::get('student/exams', [ExamController::class, 'indexStudent'])->name('exams.student');
 
     //Teacher Route
-    Route::get('teacher/exams',[ExamController::class, 'indexTeacher'])->name('exams.teacher');
-    Route::resource('teacher/exams',ExamController::class)->except('index');
-
+    Route::get('teacher/exams', [ExamController::class, 'indexTeacher'])->name('exams.teacher');
+    Route::resource('teacher/exams', ExamController::class)->except('index');
 });

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,5 +28,13 @@ class Teacher extends Model
     public function questions(){
         return $this->hasMany(Question::class);
     }
+
+    //Local Query Scope
+
+    //Getting courses from a teacher
+
+/*     public function scopeTeacherCourse(Builder $query){
+        return $query->
+    } */
 
 }

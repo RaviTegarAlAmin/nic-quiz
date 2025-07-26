@@ -37,6 +37,8 @@ class AuthController extends Controller
 
         if ($student && Hash::check($credentials['password'], $student->user->password)) {
             $user = $student->user()->first();
+
+
             Auth::login($user, $credentials['remember'] ?? false);
 
             $request->session()->regenerate();
