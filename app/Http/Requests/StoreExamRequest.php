@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use function PHPUnit\Framework\isNull;
 
 class StoreExamRequest extends FormRequest
@@ -20,17 +21,16 @@ class StoreExamRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public static function rules(): array
     {
-        $startTime = now()->addMinutes(10);
-        $endTime = $startTime->addMinutes(60);
+
 
         return [
-            'title' => 'required|string|min:5|unique:exams,name',
-            'start_at' => ['required','date','after:'.$startTime],
-            'end_at' => ['required', 'date', 'after:.'.$endTime],
+            'title' => 'required|string|min:5|unique:exams,title',
+            'start_at' => ['required','date',Rule::date()->after(now()->addMinute())],
+            'end_at' => ['required', 'date', 'after:start_at'],
             'duration' => 'required|integer|min:30',
-            'courses' => ['required', 'string', 'exists:courses,name']
+            'course_id' => 'required|integer|exists:courses,id'
         ];
     }
 }

@@ -78,9 +78,9 @@ class ExamController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Exam $exam)
     {
-        //
+        return view('exam.edit', ['exam' => $exam]);
     }
 
     /**

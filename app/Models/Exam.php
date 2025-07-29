@@ -13,7 +13,7 @@ class Exam extends Model
     //Static Variables
     public static array $status = ['finished', 'on_hold', 'not_started'];
 
-    protected $fillable = ['start_at', 'end_at', 'duration', 'status']; // Duration in minutes
+    protected $fillable = ['title', 'start_at', 'end_at', 'duration', 'status', 'course_id']; // Duration in minutes
 
     public function questions(){
         return $this->hasMany(Question::class);
