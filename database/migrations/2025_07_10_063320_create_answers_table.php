@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\ExamTaker;
 use App\Models\Question;
 use App\Models\Student;
 use Illuminate\Database\Migrations\Migration;
@@ -16,8 +17,7 @@ return new class extends Migration
         Schema::create('answers', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignIdFor(Question::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Student::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(ExamTaker::class)->constrained()->cascadeOnDelete();
 
             $table->text('answer')->nullable();
             $table->float('score')->nullable();

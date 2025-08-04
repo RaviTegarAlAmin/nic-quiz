@@ -12,11 +12,8 @@ class Grade extends Model
 
     protected $fillable = ['score', 'feedback'];
 
-    public function exam(){
-        return $this->belongsTo(Exam::class);
+    public function examtaker(){
+        return $this->hasOne(ExamTaker::class);
     }
 
-    public function student(){
-        return $this->belongsTo(Student::class);
-    }
 }

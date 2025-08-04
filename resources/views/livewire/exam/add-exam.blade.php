@@ -41,7 +41,7 @@
             <div class="flex">
                 <div><x-label for="duration" class="mr-3">Durasi</x-label></div>
                 <div class="flex-1">
-                    <x-form-input name="duration" type="number" id="duration" wire:model="duration"
+                    <x-form-input name="duration" type="number" id="duration" wire:model.blur="duration"
                         placeholder="Waktu dalam menit..." />
                 </div>
             </div>

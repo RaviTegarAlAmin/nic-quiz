@@ -20,11 +20,11 @@ return new class extends Migration
             $table->foreignIdFor(Exam::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Teacher::class)->constrained()->cascadeOnDelete();
 
-            $table->text('question');
-            $table->enum('type', Question::$type); //Exam::$type before
-            $table->unsignedInteger('weight')   ;
-            $table->text('ref_answer');
-            $table->json('ref_answer_embed'); //embedded teacher reference answer
+            $table->text('question')->nullable();
+            $table->enum('type', Question::$type)->nullable(); //Exam::$type before
+            $table->unsignedInteger('weight')->default(1);
+            $table->text('ref_answer')->nullable();
+            $table->json('ref_answer_embed')->nullable(); //embedded teacher reference answer
 
             $table->timestamps();
         });

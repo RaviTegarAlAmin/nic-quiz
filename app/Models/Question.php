@@ -12,5 +12,18 @@ class Question extends Model
 
     public static array $type = ['multiple_choice', 'essay'];
 
+    protected $fillable = ['exam_id', 'teacher_id', 'question', 'type', 'weight', 'ref_answer'];
+
+    public function exam(){
+        $this->belongsTo(Exam::class);
+    }
+
+    public function options(){
+        $this->hasMany(Option::class);
+    }
+
+    public function answer(){
+        $this->hasMany(Answer::class);
+    }
 
 }

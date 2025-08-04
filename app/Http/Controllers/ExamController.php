@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\Exam;
 use App\Models\User;
 use Illuminate\Container\Attributes\Auth;
@@ -48,13 +49,13 @@ class ExamController extends Controller
      */
     public function create()
     {
-        $teachings = auth()->user()->teacher->teachings()->get();
-        $courses = auth()->user()->teacher->courses;
-
+        $courses = Course::with(['teachings.classroom'])
+                            ->whereHas('teachings', function ($q){
+                                $q->where('teacher_id', auth()->user()->teacher->id);
+                            })->get();
 
 
         return view('exam.create', [
-            'teachings' => $teachings,
             'courses' => $courses
         ]);
     }
@@ -80,6 +81,7 @@ class ExamController extends Controller
      */
     public function edit(Exam $exam)
     {
+
         return view('exam.edit', ['exam' => $exam]);
     }
 

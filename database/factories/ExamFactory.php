@@ -28,6 +28,7 @@ class ExamFactory extends Factory
             'end_at' => $end,
             'duration' => $this->faker->numberBetween(30, 120), // minutes
             'status' => $this->faker->randomElement(Exam::$status),
+            'published' => false
         ];
     }
 }

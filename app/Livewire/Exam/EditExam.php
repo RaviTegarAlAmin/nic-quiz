@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Exam;
 
+use App\Models\Exam;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -69,8 +70,21 @@ class EditExam extends Component
     }
 
     public function lockExam(){
+        $this->resetValidation();
         $this->examlocked = true;
+        $this->hydrateFromExam();
     }
+
+public function hydrateFromExam()
+{
+    $this->title = $this->exam->title;
+    $this->start_at = $this->exam->start_at;
+    $this->end_at = $this->exam->end_at;
+    $this->duration = $this->exam->duration;
+    $this->status = $this->exam->status;
+}
+
+
     public function render()
     {
         return view('livewire.exam.edit-exam');

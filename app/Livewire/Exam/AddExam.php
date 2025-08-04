@@ -43,6 +43,7 @@ class AddExam extends Component
         $validated = $this->validate();
 
         $this->newExam = Exam::create([
+            'teacher_id' => auth()->user()->teacher->id,
             'course_id' => $this->courseId,
             ...$validated,
             'status' => 'not_started'

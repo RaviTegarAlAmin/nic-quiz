@@ -58,4 +58,8 @@
     </x-card>
 
 
+    @livewire('question.add-question', ['exam' => $exam])
+
+
+
 </div>

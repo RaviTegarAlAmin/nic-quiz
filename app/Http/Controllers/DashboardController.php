@@ -11,6 +11,7 @@ class DashboardController extends Controller
     }
 
     public function teacherDashboard(){
+
         return view('teacher.dashboard');
     }
 
