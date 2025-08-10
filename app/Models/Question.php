@@ -14,16 +14,19 @@ class Question extends Model
 
     protected $fillable = ['exam_id', 'teacher_id', 'question', 'type', 'weight', 'ref_answer'];
 
-    public function exam(){
-        $this->belongsTo(Exam::class);
+    public function exam()
+    {
+        return $this->belongsTo(Exam::class);
     }
 
-    public function options(){
-        $this->hasMany(Option::class);
+    public function options()
+    {
+        return $this->hasMany(Option::class);
     }
 
-    public function answer(){
-        $this->hasMany(Answer::class);
+    public function answer()
+    {
+        return $this->hasMany(Answer::class);
     }
 
 }

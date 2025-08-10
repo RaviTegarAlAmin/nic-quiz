@@ -16,6 +16,8 @@ class FormInput extends Component
         public ?string $value = null,
         public ?string $type = null,
         public ?string $placeholder = null,
+        public ?int $col = null,
+        public ?int $row = null
     )
     {
 

@@ -16,8 +16,9 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Question::class)->constrained()->cascadeOnDelete();
 
-            $table->tinyInteger('label');
-            $table->string('option');
+            $table->tinyInteger('label')->nullable();
+            $table->string('option')->nullable();
+
             $table->timestamps();
         });
     }
