@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 class ExamController extends Controller
 {
+    /*
+        THIS CONTROLLER USED FOR TEACHER CONTROLLER ONLY, RESTRUCTURED AT DEV
+    */
+
     /**
      * Display a listing of the resource.
      */
@@ -19,9 +23,19 @@ class ExamController extends Controller
         $user = $request->user();
         $teacher = $user->teacher;
 
-        $exams = Exam::with('course')->whereHas('course.teachings', function ($q) use ($teacher) {
-            $q->where('teacher_id', $teacher->id);
-        })->get();
+        $exams = Exam::with(['course', 'examAssignments.teaching.classroom'])
+            ->where('teacher_id', $teacher->id)
+            ->withCount([
+                'questions as multiple_choice_count' => function ($q) {
+                    $q->where('type', 'multiple_choice');
+                },
+                'questions as essay_count' => function ($q) {
+                    $q->where('type', 'essay');
+                },
+            ])
+            ->latest()
+            ->get();
+
 
         return view('exam.teacher', [
             'exams' => $exams,
@@ -34,14 +48,7 @@ class ExamController extends Controller
         $user = $request->user();
         $student = $user->student;
 
-        $exams = Exam::whereHas('course.teachings', function ($q) use ($student) {
-            $q->where('student_id', $student->id);
-        });
-
-        return view('exam.teacher', [
-            'exams' => $exams,
-            'student' => $student
-        ]);
+        return view('exam.student');
     }
 
     /**
@@ -50,9 +57,9 @@ class ExamController extends Controller
     public function create()
     {
         $courses = Course::with(['teachings.classroom'])
-                            ->whereHas('teachings', function ($q){
-                                $q->where('teacher_id', auth()->user()->teacher->id);
-                            })->get();
+            ->whereHas('teachings', function ($q) {
+                $q->where('teacher_id', auth()->user()->teacher->id);
+            })->get();
 
 
         return view('exam.create', [
@@ -71,9 +78,9 @@ class ExamController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Exam $exam)
     {
-        //
+        return view('exam.show', compact('exam'));
     }
 
     /**

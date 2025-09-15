@@ -2,7 +2,7 @@
 
     @if ($questions)
         @foreach ($questions as $index => $question)
-            <div wire:key="question-{{ $question['id'] }}">
+            <div wire:key="question-{{ $index }}">
                 <x-card class=" mb-3 transition" x-data="{ minimize: $wire.entangle('minimize.{{ $question['id'] }}') }">
                     {{-- Header function --}}
                     <div class="flex justify-between -mt-4 py-2">
@@ -17,8 +17,9 @@
                         <div class=" flex gap-2">
                             {{-- Minimize / Expand Button --}}
                             <div>
-                                <x-label x-show="minimize"
-                                    class=" text-secondary-200 border border-secondary-300 rounded-xl  px-3 py-1">{{ $question['type'] == 'multiple_choice' ? 'Pilihan Ganda' : 'Esai' }}</x-label>
+                                <x-tag x-show="minimize">
+                                    {{ $question['type'] == 'multiple_choice' ? 'Pilihan Ganda' : 'Esai' }}
+                                </x-tag>
                             </div>
                             <div>
                                 <span wire:click="toggleMinimize({{ $question['id'] }})" x-show="!minimize"
@@ -80,7 +81,7 @@
                         </div>
                         <div class="mb-4">
                             <x-label>Bobot</x-label>
-                            <x-form-input type="number" wire:model.live="questions.{{ $index }}.weight" />
+                            <x-form-input min="1" type="number" wire:model.live="questions.{{ $index }}.weight" />
                             @error('weight')
                                 {{ $message }}
                             @enderror
@@ -104,7 +105,7 @@
                                                 x-on:mouseover="checkHover= !checkHover"
                                                 x-on:mouseout="checkHover = !checkHover"
                                                 wire:click="toggleCorrectAnswer({{ $question['id'] }},{{ $option['label'] }})"
-                                                x-bind:class="checkHover ? ' text-primary-400' : ''">
+                                                x-bind:class="checkHover ? ' text-white' : '' ">
                                                 @if ($question['ref_answer'] == $option['label'])
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="35"
                                                         height="35" viewBox="0 0 24 24" fill="none"

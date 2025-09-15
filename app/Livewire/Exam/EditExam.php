@@ -14,12 +14,7 @@ class EditExam extends Component
 
     #[Validate]
     public string $title = '';
-    #[Validate]
-    public string $start_at = '';
-    #[Validate]
-    public string $end_at = '';
-    #[Validate]
-    public int $duration = 0;
+
 
     public bool $examlocked = true;
 
@@ -27,19 +22,13 @@ class EditExam extends Component
     {
         $this->exam = $exam;
         $this->title = $exam->title;
-        $this->start_at = $exam->start_at;
-        $this->end_at = $exam->end_at;
-        $this->duration = $exam->duration;
         $this->courseName = $exam->course->name;
     }
 
         protected function rules()
     {
         return [
-            'title' => 'required|string|min:5|',
-            'start_at' => ['required', 'date', 'after:now'],
-            'end_at' => ['required', 'date', 'after:start_at'],
-            'duration' => 'required|integer|min:30'
+            'title' => 'required|string|min:5|'
         ];
     }
 
@@ -64,9 +53,7 @@ class EditExam extends Component
 
     public function resetData(){
         $this->reset('title');
-        $this->reset('start_at');
-        $this->reset('end_at');
-        $this->reset('duration');
+
     }
 
     public function lockExam(){
@@ -78,12 +65,7 @@ class EditExam extends Component
 public function hydrateFromExam()
 {
     $this->title = $this->exam->title;
-    $this->start_at = $this->exam->start_at;
-    $this->end_at = $this->exam->end_at;
-    $this->duration = $this->exam->duration;
-    $this->status = $this->exam->status;
 }
-
 
     public function render()
     {

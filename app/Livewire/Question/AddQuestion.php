@@ -14,10 +14,9 @@ class AddQuestion extends Component
     public Exam $exam;
     public $teacher;
 
+
     public array $questions = [];
     public array $options = [];
-
-    public array $label = ['A', 'B', 'C', 'D'];
 
     public string $question = '';
 
@@ -30,6 +29,13 @@ class AddQuestion extends Component
 
     // minimize state keyed by question DB id
     public array $minimize = [];
+
+    /*     protected function rules(){
+            return [
+                'questions.*.weight' => 'required|integer|min:1',
+                'questions.*.question' => 'sometimes|string|',
+            ];
+        } */
 
     public function mount(Exam $exam)
     {
@@ -52,6 +58,7 @@ class AddQuestion extends Component
 
     public function addQuestion()
     {
+
         DB::transaction(function () {
 
             $q = Question::create([
@@ -87,17 +94,41 @@ class AddQuestion extends Component
      */
     public function updatedQuestions($value, $name)
     {
-        // $name comes in the format "index.field"
+
+
         [$index, $field] = explode('.', $name);
 
-        // Ensure the index exists and has a valid ID
+        //Checking whether questionID exist or not
+
         if (!isset($this->questions[$index]['id'])) {
             return;
         }
 
         $questionId = $this->questions[$index]['id'];
 
-        // Commit the change directly to the database
+
+
+        //Checking weight and its value
+
+        if ($field === 'weight') {
+            $this->validateOnly(
+                "questions.$index.weight",
+                [
+                    "questions.$index.weight" => 'required|integer|min:1|max:20'
+                ],
+                [
+                    'questions.*.weight.required' => 'Bobot tidak boleh kosong',
+                    'questions.*.weight.integer' => 'Bobot harus berupa angka',
+                    'questions.*.weight.min' => 'Minimal bobot adalah 1',
+                    'questions.*.weight.max' => 'Maksimal bobot adalah 20',
+                ]
+            );
+            $value = (int) $value;
+            if ($value < 1 || is_int($value) == false) {
+                $value = 1;
+            }
+        }
+
         Question::where('id', $questionId)->update([
             $field => $value
         ]);
@@ -201,8 +232,9 @@ class AddQuestion extends Component
         $this->minimize[$questionId] = !($this->minimize[$questionId] ?? false);
     }
 
-    public function toggleCorrectAnswer( $questionId, $value){
-        Question::where('id',$questionId)->update([
+    public function toggleCorrectAnswer($questionId, $value)
+    {
+        Question::where('id', $questionId)->update([
             'ref_answer' => $value
         ]);
 

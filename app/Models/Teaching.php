@@ -23,4 +23,12 @@ class Teaching extends Model
     public function course(){
         return $this->belongsTo(Course::class);
     }
+
+    public function examAssignments(){
+        return $this->hasMany(ExamAssignment::class);
+    }
+
+    public function exams(){
+        return $this->belongsToMany(Exam::class, 'exam_assignments');
+    }
 }

@@ -16,25 +16,29 @@ class AddExam extends Component
     public $newExam;
 
     //Properties
-
+    #[Validate]
     public $courseId = '';
 
     #[Validate]
     public string $title = '';
-    public string $start_at = '';
-    #[Validate]
-    public string $end_at = '';
-    #[Validate]
-    public int $duration = 0;
+
 
 
     protected function rules()
     {
         return [
             'title' => 'required|string|min:5|unique:exams,title',
-            'start_at' => ['required', 'date'],
-            'end_at' => ['required', 'date', 'after:start_at'],
-            'duration' => 'required|integer|min:30'
+            'courseId' => 'required'
+        ];
+    }
+
+    protected function messages()
+    {
+        return [
+            'title.required' => 'Judul ujian wajib diisi.',
+            'title.min' => 'Judul ujian minimal harus terdiri dari 5 karakter.',
+            'title.unique' => 'Judul ujian sudah digunakan, silakan pilih judul lain.',
+            'courseId.required' => 'Mata pelajaran wajib dipilih.',
         ];
     }
 
@@ -44,19 +48,18 @@ class AddExam extends Component
 
         $this->newExam = Exam::create([
             'teacher_id' => auth()->user()->teacher->id,
-            'course_id' => $this->courseId,
-            ...$validated,
-            'status' => 'not_started'
+            'course_id' => $validated['courseId'],
+            'title' => $validated['title']
         ]);
 
         return redirect()->route('exams.edit', ['exam' => $this->newExam])
-                ->with('success', 'Ujian berhasil dibuat!');
+            ->with('success', 'Ujian berhasil dibuat!');
     }
 
 
 
 
-    public function mount( $courses)
+    public function mount($courses)
     {
         $this->courses = $courses;
     }

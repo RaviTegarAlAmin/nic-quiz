@@ -21,11 +21,7 @@ return new class extends Migration {
             $table->foreignIdFor(Course::class)->constrained()->cascadeOnDelete();
 
             $table->string('title')->nullable();
-            $table->dateTime('start_at')->nullable();
-            $table->dateTime('end_at')->nullable();
-            $table->unsignedInteger('duration')->nullable(); //in_minutes
-            $table->enum('status', Exam::$status);
-            $table->boolean('published')->default(false);
+
 
             $table->timestamps();
         });

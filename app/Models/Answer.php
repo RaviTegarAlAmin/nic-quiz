@@ -10,7 +10,7 @@ class Answer extends Model
     /** @use HasFactory<\Database\Factories\AnswerFactory> */
     use HasFactory;
 
-    protected $fillable =['student_answer', 'score' ];
+    protected $fillable =['answer', 'score', 'question_id', 'exam_taker_id', 'marked' ];
 
     public function student(){
         return $this->belongsTo(Student::class);

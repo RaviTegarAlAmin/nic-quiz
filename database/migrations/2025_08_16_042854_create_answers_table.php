@@ -18,11 +18,15 @@ return new class extends Migration
             $table->id();
 
             $table->foreignIdFor(ExamTaker::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Question::class)->constrained()->cascadeOnDelete();
 
             $table->text('answer')->nullable();
             $table->float('score')->nullable();
+            $table->boolean('marked')->nullable();
 
             $table->timestamps();
+
+            $table->unique(['exam_taker_id', 'question_id']);
         });
     }
 

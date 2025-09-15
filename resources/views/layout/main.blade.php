@@ -63,28 +63,7 @@
     </div>
     @livewireScripts
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-        lucide.createIcons();
-        document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
-        });
 
-        document.addEventListener('alpine:initialized', () => {
-            lucide.createIcons();
-        });
-
-        document.addEventListener('alpine:intersect', () => {
-            lucide.createIcons();
-        });
-
-        document.addEventListener('alpine:mutate', () => {
-            lucide.createIcons();
-        });
-
-        document.addEventListener('livewire:update', () => {
-            lucide.createIcons();
-        });
-    </script>
 </body>
 
 </html>

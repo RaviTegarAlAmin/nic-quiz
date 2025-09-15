@@ -33,8 +33,8 @@ class Student extends Model
         return $this->hasMany(Answer::class);
     }
 
-    public function exams(): BelongsToMany {
-        return $this->belongsToMany(Exam::class, 'grades');
+    public function examAssignments(){
+        return $this->belongsToMany(ExamAssignment::class, 'exam_takers');
     }
 
 }

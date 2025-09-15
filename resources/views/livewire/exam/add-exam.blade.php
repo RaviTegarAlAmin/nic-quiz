@@ -20,34 +20,15 @@
                             <option value="{{ $course->id }}">{{ $course->name }}</option>
                         @endforeach
                     </select>
+                    @error('courseId')
+                        <div class=" text-danger-500 text-sm">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
             </div>
 
-            <div class="flex">
-                <div><x-label for="start_at" class="mr-3">Mulai</x-label></div>
-                <div class="flex-1">
-                    <x-form-input type="datetime-local" id="start_at" wire:model="start_at" name="start_at"
-                        placeholder="Waktu mulai..." />
-                </div>
-            </div>
-
-            <div class="flex">
-                <div><x-label for="end_at" class="mr-3">Akhir</x-label></div>
-                <div class="flex-1">
-                    <x-form-input name="end_at" type="datetime-local" id="end_at" wire:model.blur="end_at" />
-                </div>
-            </div>
-
-            <div class="flex">
-                <div><x-label for="duration" class="mr-3">Durasi</x-label></div>
-                <div class="flex-1">
-                    <x-form-input name="duration" type="number" id="duration" wire:model.blur="duration"
-                        placeholder="Waktu dalam menit..." />
-                </div>
-            </div>
-        </div>
-
-        <x-submit-button wire:click="addExam">Buat Ujian Baru</x-submit-button>
+            <x-submit-button class=" col-span-3" wire:click="addExam">Buat Ujian Baru</x-submit-button>
     </x-card>
 
 

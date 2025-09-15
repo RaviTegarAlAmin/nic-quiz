@@ -3,7 +3,11 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExamAssignmentController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\StudentExamController;
+use App\Http\Middleware\EnsureTeacher;
+use App\Livewire\Student\ExamAttempt;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -29,10 +33,21 @@ Route::middleware('auth')->group(function () {
     Route::get('student/dashboard', [DashboardController::class, 'studentDashboard'])->name('dashboard.student');
 
     //Student Route
-    Route::resource('student/classrooms', ClassroomController::class)->only('show');
-    Route::get('student/exams', [ExamController::class, 'indexStudent'])->name('exams.student');
+
+    Route::prefix('student')->group(function () {
+        Route::resource('/classrooms', ClassroomController::class)->only('show');
+        Route::get('/exams', [StudentExamController::class, 'index'])->name('student.exams.index');
+        Route::post('/exams/{assignment}/attempt', [StudentExamController::class, 'startAttempt'])->name('student.exams.start');
+        Route::get('/exams/attempt/{examTakerId}', ExamAttempt::class)->name('exams.attempt');
+    });
+
 
     //Teacher Route
-    Route::get('teacher/exams', [ExamController::class, 'indexTeacher'])->name('exams.teacher');
-    Route::resource('teacher/exams', ExamController::class)->except('index');
+
+    Route::prefix('teacher')->middleware('teacher')->group(function () {
+        Route::get('/exams', [ExamController::class, 'indexTeacher'])->name('exams');
+        Route::resource('/exams', ExamController::class)->except('index');
+        Route::resource('exams.assignments', ExamAssignmentController::class)->scoped()->only('index');
+    });
+
 });
