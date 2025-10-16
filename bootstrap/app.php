@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureStudent;
 use App\Http\Middleware\EnsureTeacher;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -13,7 +14,12 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
          $middleware->alias([
-            'teacher' => EnsureTeacher::class
+
+            //Role
+            'teacher' => EnsureTeacher::class,
+            'student' => EnsureStudent::class
+
+
          ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -28,13 +28,25 @@ class AuthController extends Controller
     {
 
         $credentials = $request->validate([
-            'username' => 'required|string|min:8|max:18',
-            'password' => 'required|string',
+            'username' => 'required|string|max:16',
+            'password' => 'required|string|max:16',
             'remember' => 'nullable|boolean'
+        ], [
+            'username.required' => 'Masukkan Username',
+            'username.max' => 'Username atau Password Salah',
+            'password.required' => 'Masukkan Password',
+            'password.max' => 'Username atau Password Salah'
         ]);
+
 
         $student = Student::where('nis', $credentials['username'])->first();
         $teacher = Teacher::where('nip', $credentials['username'])->first();
+
+        if (!$student && !$teacher) {
+            return back()->withErrors([
+                'username' => 'Username atau password salah',
+            ]);
+        }
 
         if ($student && Hash::check($credentials['password'], $student->user->password)) {
             $user = $student->user()->first();
@@ -48,17 +60,13 @@ class AuthController extends Controller
 
         } else if ($teacher && Hash::check($credentials['password'], $teacher->user->password)) {
             $user = $teacher->user()->first();
-            Auth::login($user, $credentials['remember']??false);
+            Auth::login($user, $credentials['remember'] ?? false);
 
             $request->session()->regenerate();
 
             return redirect()->route('dashboard.teacher');
         }
 
-
-
-        return redirect()->back()
-            ->with('error', 'username atau password anda salah');
     }
 
     public function adminLogin(Request $request)
@@ -82,4 +90,6 @@ class AuthController extends Controller
 
         return redirect()->route('login');
     }
+
+
 }

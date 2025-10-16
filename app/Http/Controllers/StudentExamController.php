@@ -16,17 +16,27 @@ class StudentExamController extends Controller
         $user = auth()->user();
         $student = $user->student;
 
-        $assignments = ExamAssignment::with('exam.questions.options', 'teaching.classroom', 'teaching.teacher', 'teaching.course')->
-            whereHas(
-                'teaching.classroom',
-                function ($q) use ($student) {
-                    $q->where('classroom_id', $student->classroom_id);
-                }
-            )
+
+
+        $student = auth()->user()->student;
+
+        $assignments = ExamAssignment::with([
+            'exam.questions.options',
+            'teaching.classroom',
+            'teaching.teacher',
+            'teaching.course',
+            'examTakerForStudent' // eager load singular relation
+        ])
+            ->whereHas('teaching.classroom', function ($q) use ($student) {
+                $q->where('classroom_id', $student->classroom_id);
+            })
             ->where('published', true)
             ->orderBy('end_at')
             ->latest()
             ->get();
+
+
+
 
         return view('exam.student', compact('assignments', 'student'));
     }
@@ -38,17 +48,19 @@ class StudentExamController extends Controller
 
             $student = auth()->user()->student;
 
-            $examTaker = ExamTaker::firstOrCreate([
-                'exam_assignment_id' => $assignment->id,
-                'student_id' => $student->id,
-            ],
-            [
-                'start_at' => now(),
-                'status' => 'ongoing',
-                'last_active_at' => now(),
-                'duration_used' => 0,
-                'ip_address' => request()->ip()
-            ]);
+            $examTaker = ExamTaker::firstOrCreate(
+                [
+                    'exam_assignment_id' => $assignment->id,
+                    'student_id' => $student->id,
+                ],
+                [
+                    'start_at' => now(),
+                    'status' => 'ongoing',
+                    'last_active_at' => now(),
+                    'duration_used' => 0,
+                    'ip_address' => request()->ip()
+                ]
+            );
 
             return redirect()->route('exams.attempt', ['examTakerId' => $examTaker->id]);
 

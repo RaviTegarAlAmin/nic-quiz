@@ -6,4 +6,5 @@
     </x-header>
 
     @livewire('exam-assignment.assign-classes', ['exam' => $exam])
+
 @endsection

@@ -1,9 +1,17 @@
-<x-card class="text-5xl bg-black flex justify-between" wire:poll.60s.keep-alive="heartbeat"
+<x-card class="text-5xl bg-black flex justify-between"
     x-data="{
-        h: {{ $hour }},
-        m: {{ $minute }},
-        s: {{ $second }},
+        h: Math.max({{ $hour }}, 0),
+        m: Math.max({{ $minute }}, 0),
+        s: Math.max({{ $second }}, 0),
+        interval: null,
         tick() {
+            if (this.h === 0 && this.m === 0 && this.s === 0) {
+                // already expired
+                $wire.examFinished()
+                clearInterval(this.interval)
+                return
+            }
+
             if (this.s > 0) {
                 this.s--
             } else if (this.m > 0) {
@@ -18,11 +26,20 @@
                 clearInterval(this.interval)
             }
         }
-    }" x-init="setInterval(() => tick(), 1000)">
-    <p class="text-md text-slate-600 font-bold">Durasi</p>
+    }"
+    x-init="interval = setInterval(() => tick(), 1000)"
+>
+    <p class="text-md text-slate-600 font-bold">Duration</p>
     <div>
-        <span x-text="String(h).padStart(2,'0')"></span> :
-        <span x-text="String(m).padStart(2,'0')"></span> :
-        <span x-text="String(s).padStart(2,'0')"></span>
+        <template x-if="h > 0 || m > 0 || s > 0">
+            <span>
+                <span x-text="String(h).padStart(2,'0')"></span> :
+                <span x-text="String(m).padStart(2,'0')"></span> :
+                <span x-text="String(s).padStart(2,'0')"></span>
+            </span>
+        </template>
+        <template x-if="h === 0 && m === 0 && s === 0">
+            <span>Time’s Up</span>
+        </template>
     </div>
 </x-card>

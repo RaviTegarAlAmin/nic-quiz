@@ -10,16 +10,12 @@ use Illuminate\Database\Seeder;
 
 class QuestionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Loop over existing exams
         Exam::with('teacher')->get()->each(function ($exam) {
             $teacherId = $exam->teacher_id;
 
-            // 5–10 Multiple choice
+            // --- Multiple Choice Questions ---
             $mcQuestions = Question::factory()
                 ->count(rand(5, 10))
                 ->state([
@@ -27,26 +23,33 @@ class QuestionSeeder extends Seeder
                     'teacher_id' => $teacherId,
                     'type' => 'multiple_choice',
                 ])
-                ->create();
+                ->make() // don't persist yet, need to set ref_answer
+                ->each(function ($question) use ($exam, $teacherId) {
+                    $question->save();
 
-            // Each multiple choice has 4 options
-            $mcQuestions->each(function ($question) {
-                foreach (range(1, 4) as $i) {
-                    Option::factory()->create([
-                        'question_id' => $question->id,
-                        'label' => $i,
-                        'option' => fake()->sentence(5),
-                    ]);
-                }
-            });
+                    // Create 4 options
+                    $labels = range(1, 4);
+                    foreach ($labels as $i) {
+                        Option::factory()->create([
+                            'question_id' => $question->id,
+                            'label' => (string) $i,
+                            'option' => fake()->sentence(5),
+                        ]);
+                    }
 
-            // 3–5 Essay questions
+                    // Pick one correct label (1–4) as ref_answer
+                    $question->ref_answer = (string) fake()->numberBetween(1, 4);
+                    $question->save();
+                });
+
+            // --- Essay Questions ---
             Question::factory()
                 ->count(rand(3, 5))
                 ->state([
                     'exam_id' => $exam->id,
                     'teacher_id' => $teacherId,
                     'type' => 'essay',
+                    'ref_answer' => fake()->paragraph(3),
                 ])
                 ->create();
         });

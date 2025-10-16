@@ -27,12 +27,28 @@ class ExamAssignment extends Model
         return $this->belongsTo(Teaching::class);
     }
 
-    public function examTakers(){
+    public function examTakers()
+    {
         return $this->hasMany(ExamTaker::class);
     }
 
-    public function students(){
+
+    public function students()
+    {
         return $this->belongsToMany(Student::class, 'exam_takers');
+    }
+
+
+    //Taking one instance from examtaker related to student
+    public function examTakerForStudent($studentId = null)
+    {
+        $studentId ??= auth()->user()->student->id;
+        return $this->hasOne(ExamTaker::class)
+            ->where('student_id', $studentId);
+    }
+
+    public function isEnded() : bool{
+        return $this->status === 'finished';
     }
 
 

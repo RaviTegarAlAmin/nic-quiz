@@ -3,6 +3,7 @@
 namespace App\Livewire\Student\ExamAttemptComponent;
 
 use App\Models\ExamTaker;
+use Carbon\Carbon;
 use Livewire\Component;
 
 class Timer extends Component
@@ -20,25 +21,36 @@ class Timer extends Component
 
     public function examFinished()
     {
-        $this->dispatch('exam-finished');
+        $this->dispatch('time-limit-reached');
     }
 
-    public function heartbeat()
-    {
-        $updatedDuration = $this->examTakerData->duration_used += 1;
+    /*     public function heartbeat()
+        {
+            $updatedDuration = $this->examTakerData->duration_used += 1;
 
-        $this->examTakerData->update([
-            'duration_used' => $updatedDuration,
-            'last_active_at' => now()
-        ]);
-    }
+            $this->examTakerData->update([
+                'duration_used' => $updatedDuration,
+                'last_active_at' => now()
+            ]);
+        } */
 
     public function mount(int $examDuration, ExamTaker $examTakerData)
     {
 
         $this->examTakerData = $examTakerData;
 
-        $this->duration = $examDuration - $examTakerData->duration_used;
+        $durationUsedMinutes = Carbon::parse($examTakerData->start_at)->diffInMinutes(now());
+
+        $durationUsedMinutes = (int) $examTakerData->start_at->diffInMinutes(now());
+
+        /* Debug minutes */
+
+        $durationUsedMinutes = 0;
+
+        $this->duration = $examDuration - $durationUsedMinutes;
+
+        //Test duration
+        $this->duration = 1;
 
         $this->hour = (int) ($this->duration / 60);
 

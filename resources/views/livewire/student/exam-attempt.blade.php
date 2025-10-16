@@ -3,8 +3,11 @@
     <x-slot name="header">
         <div class=" flex justify-between items-center mx-auto">
             <x-header class=" text-white">{{ $exam['title'] }}</x-header>
+            <x-profile></x-profile>
+
         </div>
     </x-slot>
+
 
     <div class=" grid md:grid-cols-4 grid-cols-1 md:gap-4 gap-1">
         <div class=" col-span-3">
@@ -205,10 +208,10 @@
                             @class([
                                 'shadow-none border border-slate-400 text-center font-bold text-secondary-400 transition',
                                 'hover:ring-2 hover:ring-secondary-500 hover:ring-offset-0 cursor-pointer relative',
-                                'bg-secondary-400/90 text-white' =>
+                                'bg-secondary-600/50 text-white' =>
                                     ($answer[$question['id']] ?? null) != null,
                                 'ring-4 ring-offset-0 ring-danger-400 relative' => $index == $currentIndex,
-                                'bg-secondary-400/90 text-white ring-4 ring-offset-0 ring-danger-300 shadow-sm relative' =>
+                                'bg-secondary-600/50 text-white ring-4 ring-offset-0 ring-danger-300 shadow-sm relative' =>
                                     $index == $currentIndex && ($answer[$question['id']] ?? null) != null,
                             ])>
                             {{ $index + 1 }}
@@ -230,7 +233,7 @@
 
             {{-- Submit Button --}}
 
-            <div class=" mt-2" x-data="{modal : false}">
+            <div class=" mt-2" x-data="{ modal: false }">
                 <x-submit-button class=" rounded-md" x-on:click="modal = !modal">
                     Submit
                 </x-submit-button>
@@ -245,11 +248,17 @@
 
 
 
-
-
-
-
     </div>
 
+
+    <div x-data="{
+        modal: false
+    }" x-on:time-limit-reached.window="
+        modal = true
+     ">
+        <x-modal x-show="modal" :message="'Waktu Ujian Habis'" :disabled="true">
+            <x-submit-button wire:click="submit">Kembali Ke Daftar Ujian</x-submit-button>
+        </x-modal>
+    </div>
 
 </div>

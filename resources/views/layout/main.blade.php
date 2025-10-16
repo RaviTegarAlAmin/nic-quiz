@@ -40,7 +40,7 @@
         </nav>
 
         <!-- main content  -->
-        <div id="main-content" class="h-svh  w-full overflow-y-auto p-4 bg-white dark:bg-neutral-950">
+        <div id="main-content" class="h-svh  w-full overflow-y-auto p-4 bg-primary-300 dark:bg-neutral-950">
             @yield('main-content')
         </div>
 

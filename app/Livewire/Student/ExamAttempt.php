@@ -6,6 +6,7 @@ use App\Models\Answer;
 use App\Models\Exam;
 use App\Models\ExamAssignment;
 use App\Models\ExamTaker;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -120,7 +121,17 @@ class ExamAttempt extends Component
         //initialize exam taker data
         $this->examTakerId = $examTakerId;
 
-        $this->examTakerData = ExamTaker::findOrFail($examTakerId);
+        $this->examTakerData = ExamTaker::with('student')->findOrFail($examTakerId);
+
+        //authoriziation
+
+/*         if ($this->authorize('attempt', $this->examTakerData)) {
+            abort(403);
+        }
+
+        if ($this->authorize('finished', $this->examTakerData)) {
+            abort(403);
+        } */
 
         $examAssignment = ExamAssignment::query()
             ->whereHas('examTakers', function ($q) use ($examTakerId) {
@@ -175,13 +186,11 @@ class ExamAttempt extends Component
                 'finished_at' => now()
             ]);
 
-            return redirect()->route('student.exams.index')->with('success',"Berhasil menyelesaikan");
+            return redirect()->route('student.exams.index')->with('success', "Berhasil menyelesaikan ujian");
 
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Gagal Submit Ujian');
         }
-
-
 
     }
 

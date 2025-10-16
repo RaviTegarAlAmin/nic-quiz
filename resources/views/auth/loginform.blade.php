@@ -25,5 +25,13 @@
 
         </form>
 
+
+        @if (session('error'))
+            <div
+                class=" px-3 py-2 bg-danger-500/50 rounded-md font-semibold text-md hover:bg-danger-500/30 hover:opacity-50">
+                {{ session('error') }} <span class=" ml-4">x</span>
+             </div>
+        @endif
+
     </div>
 @endsection

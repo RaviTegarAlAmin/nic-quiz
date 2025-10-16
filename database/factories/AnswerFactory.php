@@ -17,7 +17,8 @@ class AnswerFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'answer' => null, // set in seeder depending on question type
+            'score' => null,
         ];
     }
 }

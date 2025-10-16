@@ -6,15 +6,13 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Modal extends Component
+class Button extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
-        public ?string $message = 'konfirmasi',
-        public ?string $action = '',
-        public ?bool $disabled = false
+        public ?string $type = 'default'
 
     )
     {
@@ -26,6 +24,6 @@ class Modal extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.modal');
+        return view('components.button');
     }
 }

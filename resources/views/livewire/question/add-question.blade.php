@@ -3,7 +3,7 @@
     @if ($questions)
         @foreach ($questions as $index => $question)
             <div wire:key="question-{{ $index }}">
-                <x-card class=" mb-3 transition" x-data="{ minimize: $wire.entangle('minimize.{{ $question['id'] }}') }">
+                <x-card class=" mb-8 transition border-t-8 border-secondary-400 border-b-8 drop-shadow-xl border-b-gray-400" x-data="{ minimize: $wire.entangle('minimize.{{ $question['id'] }}') }">
                     {{-- Header function --}}
                     <div class="flex justify-between -mt-4 py-2">
 
