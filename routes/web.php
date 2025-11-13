@@ -50,6 +50,8 @@ Route::middleware('auth')->group(function () {
         Route::prefix('exams')->group(function (){
             Route::get('/', [ExamController::class, 'indexTeacher'])->name('exams');
             Route::get('{exam}/grades',[TeacherGradeController::class, 'index'])->name('teacher.exams.grade.index');
+            Route::get('{exam}/assignment/{assignment}/correction',[TeacherGradeController::class, 'correction'])->name('teacher.exams.grade.correction');
+
         });
     });
 

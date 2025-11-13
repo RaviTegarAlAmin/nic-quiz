@@ -14,12 +14,19 @@ use function PHPUnit\Framework\isNull;
 class CorrectionService
 {
 
+    public function __construct(
+        OpenAIEmbeddingService $openAIembedding
+    ) {
+
+    }
+
 
     public function correction(ExamAssignment $assignment)
     {
         $assignment = $assignment->load('examTakers.answers.question:id,ref_answer,type,weight');
 
         $exam = $assignment->exam->loadSum('questions as total_weight', 'weight');
+        $exam = $exam->load('questions');
 
         $totalWeight = $exam->total_weight;
 
@@ -27,10 +34,31 @@ class CorrectionService
 
         $bulkScore = [];
 
+        dd($exam);
+
+
+
         foreach ($assignment->examTakers as $examTaker) {
 
             $totalScore = 0;
 
+            $essayAnswers = $examTaker->answers()
+                ->whereHas('question', function ($q) {
+                    return $q->where('type', 'essay');
+                })
+                ->with('question:id,ref_answer')
+                ->get();
+
+            $mcqAnswers = $examTaker->answers()
+                ->whereHas('question', function ($q) {
+                    return $q->where('type', 'multiple_choice');
+                })
+                ->with('question:id,ref_answer')
+                ->get();
+
+            dd($essayAnswers, $mcqAnswers, $examTaker);
+
+            $this->mcqCorrection($mcqAnswers);
 
             foreach ($examTaker->answers as $answer) {
 
@@ -67,7 +95,7 @@ class CorrectionService
 
             //Updating score for examtaker
 
-            $totalScore = round(($totalScore*100)/$totalWeight,2);
+            $totalScore = round(($totalScore * 100) / $totalWeight, 2);
 
             $bulkScore[] = [
                 'exam_taker_id' => $examTaker->id,

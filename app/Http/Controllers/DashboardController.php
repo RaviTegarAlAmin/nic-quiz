@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Teacher;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -10,9 +12,13 @@ class DashboardController extends Controller
         return view('student.dashboard');
     }
 
-    public function teacherDashboard(){
+    public function teacherDashboard(Teacher $teacher){
 
-        return view('teacher.dashboard');
+        $teacher = auth()->user()->teacher;
+
+        $teacherData = $teacher->load(['teachings.classroom','teachings.course', 'teachings.exams']);
+
+        return view('teacher.dashboard', compact('teacherData'));
     }
 
     public function adminDashboard(){

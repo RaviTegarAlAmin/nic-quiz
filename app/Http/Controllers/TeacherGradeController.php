@@ -14,4 +14,19 @@ class TeacherGradeController extends Controller
 
         return view('grade.teacher.index', compact('exam'));
     }
+
+    public function correction(
+        Exam $exam,
+        ExamAssignment $assignment,
+        Request $request){
+
+        $examTakerId = $request->query('examTakerId');
+
+        $examTakers = ExamTaker::with('student.classroom')->where('exam_assignment_id',$assignment->id)->get();
+
+        $exam = $exam->load('questions.options');
+
+
+        return view('grade.teacher.correction', compact(['exam','examTakers','examTakerId']));
+    }
 }

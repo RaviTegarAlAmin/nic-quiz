@@ -1,3 +1,4 @@
-<div {{ $attributes->class(['my-2 px-5 py-6 mb-6  text-secondary-400 text-2xl font-bold']) }}>
+<div
+    {{ $attributes->class(['bg-gradient-to-r from-secondary-400 to-secondary-300 rounded-lg shadow-lg px-6 py-4 mb-6']) }}>
     {{ $slot }}
 </div>

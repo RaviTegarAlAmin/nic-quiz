@@ -19,7 +19,6 @@
                 ]) wire:key="assignment-{{ $assignment->id }}"
                     wire:click="changeCurrentAssignment({{ $assignment->id }})">
                     <div class=" flex justify-between mb-4">
-                        @dump($assignment->id)
                         <x-class-status-tag class=" !text-secondary-400">
                             {{ $assignment->examTakers->first()?->student?->classroom?->name }}
                         </x-class-status-tag>
@@ -28,10 +27,10 @@
                         </x-tag>
                     </div>
                     <p>
-                        {{ 'Mulai     :' . date_format($assignment->start_at, 'd M Y') }}
+                        {{ 'Mulai     : ' . date_format($assignment->start_at, 'd M Y') }}
                     </p>
                     <p>
-                        {{ 'Berakhir :' . date_format($assignment->end_at, 'd M Y') }}
+                        {{ 'Berakhir : ' . date_format($assignment->end_at, 'd M Y') }}
                     </p>
                 </x-card>
             @endforeach
@@ -68,18 +67,26 @@
     {{-- Exam Taker Data Table For Teacher Grade --}}
 
     @if ($currentAssignment)
-    <div class=" flex justify-between align-middle">
-        <x-tag class="w-32 mt-5">Peserta Ujian</x-tag>
-        <x-button
-        wire:click="correction({{ $currentAssignment }})"
-        variant="success" class=" mt-5" >Nilai Ujian</x-button>
-    </div>
+        <div class=" flex justify-between align-middle">
+            <x-tag class="w-32 mt-5">Peserta Ujian</x-tag>
+            <x-button wire:click="correction({{ $currentAssignment }})" variant="success"
+                class="mt-5 transition-opacity duration-200" wire:loading.class="opacity-50 cursor-not-allowed"
+                wire:target="correction">
+                <span wire:loading.remove wire:target="correction">Nilai Ujian</span>
+                <span wire:loading wire:target="correction">Loading...</span>
+            </x-button>
+        </div>
         <div class="md:overflow-x-visible overflow-x-auto">
+            <div wire:loading
+                class=" w-full min-h-28 bg-gray-100 animate-pulse border border-slate-100 drop-shadow-md rounded-md mt-5 flex justify-center items-center">
+                <p class=" text-center font-bold text-secondary-400 opacity-50 align-middle">Memuat Tabel...</p>
+            </div>
             <table
-                class="table w-full border-separate border-spacing-0 drop-shadow-lg text-center rounded-lg overflow-hidden mt-10 border-r-8 border-r-secondary-500/60">
+                class="table w-full border-separate border-spacing-0 drop-shadow-lg text-center rounded-lg overflow-hidden mt-10 border-r-8 border-r-secondary-500/60"
+                wire:loading.remove>
                 <thead class="bg-secondary-400 text-white px-4 py-6 font-semibold text-center">
                     <tr>
-                        <th class="py-6" >
+                        <th class="py-6">
                             Nama
                         </th>
                         <th>
@@ -111,14 +118,16 @@
                                 </a>
 
                                 <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        title="Lihat Hasil Ujian"
-                                        class="lucide lucide-move-up-right-icon lucide-move-up-right hover:text-slate-400 cursor-pointer">
-                                        <path d="M13 5H19V11" />
-                                        <path d="M19 5L5 19" />
-                                    </svg>
+                                    <a
+                                        href="{{ route('teacher.exams.grade.correction', [$exam, $currentAssignment]) }}?examTakerId={{ $examTaker->id }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" title="Lihat Hasil Ujian"
+                                            class="lucide lucide-move-up-right-icon lucide-move-up-right text-slate-400 hover:text-gray-600 cursor-pointer">
+                                            <path d="M13 5H19V11" />
+                                            <path d="M19 5L5 19" />
+                                        </svg>
+                                    </a>
                                 </div>
                             </td>
                             <td class=" border px-4 py-2 whitespace-nowrap">
@@ -135,14 +144,16 @@
 
                             <td class=" border px-4 py-2 whitespace-nowrap">
                                 @if ($examTaker->status == 'ongoing')
-                                    {{ 'Dikerjakan' }}
+                                    <x-class-status-tag status="ongoing" :label="true">
+                                    </x-class-status-tag>
                                 @else
-                                    {{ 'Selesai' }}
+                                    <x-class-status-tag status="finished" :label="true">
+                                    </x-class-status-tag>
                                 @endif
                             </td>
-                            @if ($examTaker->grade?->score)
-                                <td>
-                                    {{ $examTaker->grade->score }}
+                            @if ($examTaker->grade?->exam_score != null)
+                                <td class=" border px-4 py-2 whitespace-nowrap">
+                                    {{ $examTaker->grade->exam_score }}
                                 </td>
                             @else
                                 <td class=" px-3">
@@ -155,6 +166,7 @@
                     @endforeach
                 </tbody>
             </table>
+
 
         </div>
     @else
