@@ -18,10 +18,7 @@
             @yield('main-content')
         </div>
 
-        <!-- Footer -->
-        <div class=" bg-secondary-400 border-t text-center py-4 text-sm text-white">
-            MTs Nic 2025
-        </div>
+
 
     </div>
 

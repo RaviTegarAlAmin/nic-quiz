@@ -14,11 +14,25 @@ use function PHPUnit\Framework\isNull;
 class CorrectionService
 {
 
+    private $batchedEssay = [];
+
+    private $bulkUpdateEssay = [];
+
+    private array $similarityScores = [];
+
+    //just to check inputs and match the exam taker Id, dummy variables
+    public array $dummy_inputs = [];
+
     public function __construct(
-        OpenAIEmbeddingService $openAIembedding
+        private OpenAIEmbeddingService $openAIembedding,
+        private CosineSimilarityService $cosineSimilarityService
     ) {
 
     }
+
+    /* So in this function I iterate the correction based on exam taker. Meanwhile the fricking
+    essay embedding service setted to evaluate answer base on question lmao. This decision consider RPM for openAI. It will be more efficient to call API per question-answer. Thus, I reactively
+    adapt the essay correction part following the mcq correction structure. */
 
 
     public function correction(ExamAssignment $assignment)
@@ -34,45 +48,47 @@ class CorrectionService
 
         $bulkScore = [];
 
-        dd($exam);
 
+
+        //initialize bulk essay update
+
+        foreach ($exam->questions as $question) {
+            if (!isset($this->batchedEssay[$question->id]) && $question->type == 'essay') {
+                $this->batchedEssay[$question->id][] = [
+                    'ref_answer' => $question->ref_answer,
+                    'weight' => $question->weight
+                ];
+            }
+        }
+
+        //=============================================================================
+        //MCQ Part
+        //=============================================================================
 
 
         foreach ($assignment->examTakers as $examTaker) {
 
             $totalScore = 0;
 
-            $essayAnswers = $examTaker->answers()
-                ->whereHas('question', function ($q) {
-                    return $q->where('type', 'essay');
-                })
-                ->with('question:id,ref_answer')
-                ->get();
+            //Getting each type of question per examTaker
 
-            $mcqAnswers = $examTaker->answers()
-                ->whereHas('question', function ($q) {
-                    return $q->where('type', 'multiple_choice');
-                })
-                ->with('question:id,ref_answer')
-                ->get();
+            $essayAnswers = $examTaker->answers
+                ->filter(fn($a) => $a->question->type === 'essay');
 
-            dd($essayAnswers, $mcqAnswers, $examTaker);
+            $mcqAnswers = $examTaker->answers
+                ->filter(fn($a) => $a->question->type === 'multiple_choice');
 
-            $this->mcqCorrection($mcqAnswers);
+            //correction for multiple choice
 
-            foreach ($examTaker->answers as $answer) {
+            foreach ($mcqAnswers as $answer) {
 
                 $question = $answer->question;
                 $ref_answer = $question->ref_answer;
 
                 $score = 0;
 
-                //Checking question type
-
-                if ($question->type == 'multiple_choice' && $answer->answer != null) {
+                if ($answer->answer != null) {
                     $score = $this->mcqCorrection($answer->answer, $ref_answer);
-                } elseif ($question->type == 'essay' && $answer->answer != null) {
-                    $score = $this->essayCorrection($answer->answer, $ref_answer);
                 }
 
                 //Weighting and Adding to Total Score
@@ -82,18 +98,19 @@ class CorrectionService
 
                 $totalScore += $score;
 
-                //Updating every goddamn answer score
+                //Updating every goddamn answer score for MCQ
                 $bulkUpdate[] = [
                     'id' => $answer->id,
-                    'exam_taker_id' => $examTaker->id,
                     'question_id' => $question->id,
+                    'exam_taker_id' => $examTaker->id,
                     'score' => $score,
                     'updated_at' => now()
                 ];
 
             }
 
-            //Updating score for examtaker
+
+            //Updating mcq score for examtaker
 
             $totalScore = round(($totalScore * 100) / $totalWeight, 2);
 
@@ -102,9 +119,75 @@ class CorrectionService
                 'exam_score' => $totalScore
             ];
 
+
+            //Batching essay answers per examtaker
+
+            foreach ($essayAnswers as $answer) {
+
+                $this->batchedEssay[$answer->question_id][] = [
+                    'id' => $answer->id,
+                    'exam_taker_id' => $answer->examTaker->id,
+                    'answer' => $answer->answer
+                ];
+
+            }
+
+
+        }
+
+        //=============================================================================
+        //Essay Part
+        //=============================================================================
+
+
+        //Changing array structure for conviniency on updating the examtakerscore
+
+        $bulkScoreByExamTaker = [];
+        foreach ($bulkScore as $score) {
+            $bulkScoreByExamTaker[$score['exam_taker_id']] = $score['exam_score'];
         }
 
 
+
+
+        $this->essayCorrection($this->batchedEssay);
+
+        //Adding score to existing mcq score
+
+        foreach ($this->bulkUpdateEssay as $examTakerId => $updateEssays) {
+            $essayScores = 0;
+            foreach ($updateEssays as $essay) {
+                $essayScores += $essay['score'];
+                $bulkUpdate[] = [
+                    'id' => $essay['id'],
+                    'question_id' => $essay['question_id'],
+                    'exam_taker_id' => $examTakerId,
+                    'score' => $essay['score'],
+                    'updated_at' => $essay['updated_at']
+                ];
+            }
+
+            $essayScores = round(($essayScores * 100) / $totalWeight, 2);
+
+            if (isset($bulkScoreByExamTaker[$examTakerId])) {
+                $bulkScoreByExamTaker[$examTakerId] += $essayScores;
+            } else {
+                $bulkScoreByExamTaker[$examTakerId] = $essayScores;
+            }
+
+        }
+
+        $bulkScore = [];
+        foreach ($bulkScoreByExamTaker as $examTakerId => $score) {
+            $bulkScore[] = [
+                'exam_taker_id' => $examTakerId,
+                'exam_score' => $score
+            ];
+        }
+
+/*         dd($this->similarityScores, $this->batchedEssay, $this->bulkUpdateEssay, $bulkUpdate, $bulkScoreByExamTaker, $bulkScore);
+
+ */
         if ($bulkUpdate != null) {
 
             DB::transaction(function () use ($bulkUpdate, $bulkScore) {
@@ -125,6 +208,7 @@ class CorrectionService
         }
 
 
+
     }
 
     protected function mcqCorrection(string $answer, string $ref_answer)
@@ -132,11 +216,70 @@ class CorrectionService
         return $answer == $ref_answer ? 1 : 0;
     }
 
-    protected function essayCorrection(string $answer, string $ref_answer)
+    protected function essayCorrection(array $batchedEssay)
     {
-        return 1;
+        //Extracting batchedEssay data to for inputs
+
+
+        foreach ($batchedEssay as $questionId => $essayAnswerPerQuestion) {
+
+            //mapping ref_answer and student answer
+
+            $ref = array_shift($essayAnswerPerQuestion);
+
+            $ref_answer = $ref['ref_answer'];
+
+            $inputs = array_map(fn($a) => $a['answer'], $essayAnswerPerQuestion);
+
+            $inputs = array_merge([$ref_answer], $inputs);
+
+            $this->dummy_inputs[] = $inputs;
+
+            //embedding per question
+
+            $embeddingsPerQuestion = $this->openAIembedding->embedding($inputs);
+
+            //cosine similarity evaluation returning score of similarity
+
+            $this->similarityScores[] = $this->cosineSimilarityService->similarity($embeddingsPerQuestion);
+
+        }
+
+
+        $this->mapSimilarityScoresToBulkUpdate();
+
+
     }
 
+    private function mapSimilarityScoresToBulkUpdate()
+    {
+
+
+        $row_index = 0;
+
+        //looping for every batched essay per questions
+        foreach ($this->batchedEssay as $questionId => $essayAnswers) {
+
+
+            //separating first element which is ref answer and weight
+            $questionData = array_shift($essayAnswers);
+
+
+            //looping the rest of essay Answer
+            foreach ($essayAnswers as $index => $essayAnswer) {
+                $essayAnswer['score'] = $this->similarityScores[$row_index][$index] * $questionData['weight'];
+                $this->bulkUpdateEssay[$essayAnswer['exam_taker_id']][] = [
+                    'id' => $essayAnswer['id'],
+                    'question_id' => $questionId,
+                    'score' => $essayAnswer['score'],
+                    'updated_at' => now()
+                ];
+            }
+
+            $row_index += 1;
+        }
+
+    }
 
 
 }

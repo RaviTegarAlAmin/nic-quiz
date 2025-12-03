@@ -32,6 +32,7 @@
                     <p>
                         {{ 'Berakhir : ' . date_format($assignment->end_at, 'd M Y') }}
                     </p>
+                    @dump($assignment->id)
                 </x-card>
             @endforeach
         </div>
@@ -114,7 +115,7 @@
 
                             <td class=" border px-4 py-2 whitespace-nowrap text-left flex justify-between">
                                 <a href="" class=" hover:underline hover:text-seondary-400">
-                                    {{ $examTaker->student->name }}
+                                    {{ $examTaker->student->name.' id: '.$examTaker->student->id }}
                                 </a>
 
                                 <div>

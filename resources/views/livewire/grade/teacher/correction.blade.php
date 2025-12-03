@@ -214,7 +214,7 @@
                                                         (!$questionAnswer['answer'] ||
                                                             $option['label'] != $questionAnswer['answer']['answer']),
 
-                                                    'bg-danger-600/50 text-white border-b-8 border-r-4 border-r-danger-600 border-b-danger-600' =>
+                                                    'bg-danger-500/90 text-black border-b-8 border-r-4 border-r-danger-600 border-b-danger-600' =>
                                                         $questionAnswer['answer'] &&
                                                         $option['label'] == $questionAnswer['answer']['answer'] &&
                                                         $option['label'] != $questionAnswer['question']['ref_answer'],
@@ -254,7 +254,7 @@
                                     <div class=" flex justify-end">
                                         <div class=" flex justify-between gap-5">
                                             <x-tag> Nilai Jawaban: {{ $questionAnswer['answer']['score'] }}</x-tag>
-                                            <x-tag> Kemiripan Jawaban: {{ $questionAnswer['answer'] }}</x-tag>
+                                            <x-tag> Kemiripan Jawaban: {{ '-' }}</x-tag>
                                         </div>
                                     </div>
                                 </div>
