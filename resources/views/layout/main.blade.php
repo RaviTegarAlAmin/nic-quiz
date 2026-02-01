@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>NIC-quiz</title>
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
 
@@ -23,8 +23,8 @@
             class="fixed left-0 z-20 flex h-svh w-60 shrink-0 flex-col border-r border-neutral-300 bg-neutral-50 p-4 transition-transform duration-300 md:w-64 md:translate-x-0 md:relative dark:border-neutral-700 dark:bg-neutral-900"
             x-bind:class="showSidebar ? 'translate-x-0' : '-translate-x-60'" aria-label="sidebar navigation">
             <!-- logo  -->
-            <a href="#" class="ml-2 w-fit mb-4 text-2xl font-bold text-neutral-900 dark:text-white">
-                logo
+            <a href="" class="ml-2 w-fit mb-4 text-2xl font-bold text-neutral-900 dark:text-white">
+                <img class=" h-24 w-24" src="{{ asset('Assets/Logo/Logo-MTs-Nurul-Islam-Cisauk.png') }}" alt="Logo MTs Nurul Islam Cisauk">
             </a>
 
             <!-- Side Bar -->
@@ -32,6 +32,8 @@
                 @include('sidebar.student')
             @elseif (auth()->user()->teacher)
                 @include('sidebar.teacher')
+            @elseif (auth()->user()->admin)
+                @include('sidebar.admin')
             @endif
 
             <!-- Profile Menu  -->
@@ -62,7 +64,6 @@
         </button>
     </div>
     @livewireScripts
-    <script src="https://unpkg.com/lucide@latest"></script>
 
 </body>
 

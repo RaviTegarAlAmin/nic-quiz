@@ -116,7 +116,7 @@
                     {{-- Essay --}}
 
                     <div>
-                        <x-form-input wire:model.live.debounce.200ms="currentAnswer" type="textarea" col="30"
+                        <x-form-input wire:model.live.debounce.2000ms="currentAnswer" type="textarea" col="30"
                             row="4"></x-form-input>
                     </div>
                 @endif

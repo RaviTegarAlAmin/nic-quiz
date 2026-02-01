@@ -19,7 +19,6 @@ class EnsureStudent
             abort(403, 'Unauthorized Action');
         }
         ;
-
         return $next($request);
     }
 }

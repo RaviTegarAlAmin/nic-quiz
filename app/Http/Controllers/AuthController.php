@@ -67,18 +67,47 @@ class AuthController extends Controller
             return redirect()->route('dashboard.teacher');
         }
 
+        return back()->withErrors([
+            'password' => 'Username atau password salah',
+        ]);
+
     }
 
     public function adminLogin(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required|string|min:8|max:18',
-            'password' => 'required|string',
+            'username' => 'required|string|max:16',
+            'password' => 'required|string|max:16',
+            'remember' => 'nullable|boolean'
+        ], [
+            'username.required' => 'Masukkan Username',
+            'username.max' => 'Username atau Password Salah',
+            'password.required' => 'Masukkan Password',
+            'password.max' => 'Username atau Password Salah'
         ]);
 
-        if (Auth::attempt($credentials)) {
-            return redirect()->route('dashboard.admin');
+        $user = User::where('email', $credentials['username'])->first();
+
+
+        if (!$user) {
+            return back()->withErrors([
+                'username' => 'Username atau password salah',
+            ]);
         }
+
+        if ($user->admin && Hash::check($credentials['password'], $user->password)) {
+
+            Auth::login($user, $credentials['remember'] ?? false);
+
+            request()->session()->regenerate();
+
+            return redirect()->route('admin.dashboard');
+        }
+
+        return back()->withErrors([
+            'password' => 'Username atau password salah',
+        ]);
+
     }
 
     public function logout(Request $request)

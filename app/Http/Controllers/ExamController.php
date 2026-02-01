@@ -36,10 +36,16 @@ class ExamController extends Controller
             ->latest()
             ->get();
 
+        $courses = Course::with(['teachings.classroom'])
+            ->whereHas('teachings', function ($q) use ($teacher) {
+                $q->where('teacher_id', $teacher->id);
+            })->get();
+
 
         return view('exam.teacher', [
             'exams' => $exams,
-            'teacher' => $teacher
+            'teacher' => $teacher,
+            'courses' => $courses
         ]);
     }
 
@@ -103,8 +109,11 @@ class ExamController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Exam $exam)
     {
-        //
+
+        $exam->delete();
+
+        return redirect()->route('exams')->with('Ujian Dihapus');
     }
 }

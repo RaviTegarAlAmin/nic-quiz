@@ -185,9 +185,9 @@ class CorrectionService
             ];
         }
 
-/*         dd($this->similarityScores, $this->batchedEssay, $this->bulkUpdateEssay, $bulkUpdate, $bulkScoreByExamTaker, $bulkScore);
+      /*   dd($this->similarityScores, $this->batchedEssay, $this->bulkUpdateEssay, $bulkUpdate, $bulkScoreByExamTaker, $bulkScore); */
 
- */
+
         if ($bulkUpdate != null) {
 
             DB::transaction(function () use ($bulkUpdate, $bulkScore) {

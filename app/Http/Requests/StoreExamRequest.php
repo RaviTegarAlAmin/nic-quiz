@@ -31,6 +31,7 @@ class StoreExamRequest extends FormRequest
             'end_at' => ['required', 'date', 'after:start_at'],
             'duration' => 'required|integer|min:30',
             'course_id' => 'required|integer|exists:courses,id',
+            'something' => 'required|integer|min:7|max:9'
         ];
     }
 }

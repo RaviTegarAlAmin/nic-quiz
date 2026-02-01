@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answer;
 use App\Models\Exam;
 use App\Models\ExamAssignment;
 use App\Models\ExamTaker;
+use App\Models\Question;
 use App\Models\Student;
 use App\Models\Teaching;
 use Illuminate\Http\Request;
@@ -41,6 +43,39 @@ class StudentExamController extends Controller
         return view('exam.student', compact('assignments', 'student'));
     }
 
+
+    public function result(ExamAssignment $assignment)
+    {
+        $student = auth()->user()->student->load('classroom');
+
+        $exam = $assignment->exam;
+
+        $questions = $exam->questions;
+
+
+        $examTaker = ExamTaker::where('student_id', $student->id)
+            ->where('exam_assignment_id', $assignment->id)->
+            with('grade')
+            ->firstOrFail();
+
+        $answers = Answer::where('exam_taker_id', $examTaker->id)->get();
+
+        $questionAnswers = Answer::where('exam_taker_id', $examTaker->id)
+            ->with('question')
+            ->get();
+
+        $mcqQuestions =
+        $questionAnswers
+        ->filter(fn ($answer) => $answer->question && $answer->question->type == 'multiple_choice')->count();
+
+        $essayQuestions =
+        $questionAnswers
+        ->filter(fn ($answer) => $answer->question && $answer->question->type == 'essay')->count();
+
+        return view('exam.student-result', compact(['student', 'examTaker', 'assignment', 'questionAnswers', 'mcqQuestions', 'essayQuestions','questions']));
+    }
+
+    //Control examtaker
     public function startAttempt(ExamAssignment $assignment)
     {
 

@@ -11,8 +11,6 @@ class GradeIndex extends Component
 {
     public $exam;
 
-    public ?string $test = 'test';
-
     public $examAssignments;
 
     public  $currentAssignment;
@@ -22,9 +20,6 @@ class GradeIndex extends Component
         dd($this->currentAssignment);
     }
 
-    public function testingFunction(){
-        $this->test = 'berhasil';
-    }
 
     public function mount(Exam $exam)
     {

@@ -52,7 +52,7 @@ class AddExam extends Component
             'title' => $validated['title']
         ]);
 
-        return redirect()->route('exams.edit', ['exam' => $this->newExam])
+        return redirect()->route('exams')
             ->with('success', 'Ujian berhasil dibuat!');
     }
 

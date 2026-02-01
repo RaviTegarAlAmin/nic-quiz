@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureAdmin;
 use App\Http\Middleware\EnsureStudent;
 use App\Http\Middleware\EnsureTeacher;
 use Illuminate\Foundation\Application;
@@ -17,7 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
             //Role
             'teacher' => EnsureTeacher::class,
-            'student' => EnsureStudent::class
+            'student' => EnsureStudent::class,
+            'admin' => EnsureAdmin::class
 
 
          ]);

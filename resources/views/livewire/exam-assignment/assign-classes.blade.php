@@ -79,7 +79,7 @@
         <x-submit-button x-on:click="modal=!modal">Buat Penugasan Baru</x-submit-button>
 
         <x-modal message="Tambahkan Penugasan Pada Kelas?">
-            <x-submit-button class=" bg-success-700" wire:click="assignExam"
+            <x-submit-button class=" bg-success-500 hover:bg-success-600" wire:click="assignExam"
                 x-on:click="modal=!modal">Ya</x-submit-button>
         </x-modal>
     </x-card>

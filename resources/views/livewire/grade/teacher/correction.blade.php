@@ -13,7 +13,7 @@
             <div class="relative z-10 -mb-20 md:mb-0">
                 <div
                     class="w-40 h-40 rounded-full border-4 border-secondary-400 bg-gray-100 overflow-hidden shadow-xl ring-4 ring-white">
-                    <img src="https://via.placeholder.com/150" class="object-cover w-full h-full" alt="Student Photo">
+                    <img src="{{ asset('Assets/Logo/default-profile.png') }}" class="object-cover w-full h-full" alt="Student Photo">
                 </div>
             </div>
 
@@ -221,26 +221,6 @@
                                                 ])>
                                                 {{ $option->option }}
                                             </x-form-input>
-
-                                            {{--                                             <!-- Check Icon -->
-                                            <div class="absolute top-3 right-3 text-secondary-400">
-                                                @if ($questionAnswer['answer']['answer'] == $questionAnswer['question']['ref_answer'])
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="text-green-500">
-                                                        <path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344" />
-                                                        <path d="m9 11 3 3L22 4" />
-                                                    </svg>
-                                                @else
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="text-gray-300">
-                                                        <rect width="18" height="18" x="3" y="3" rx="2" />
-                                                    </svg>
-                                                @endif
-                                            </div> --}}
                                         </div>
                                     @endforeach
                                 </div>
@@ -253,8 +233,8 @@
                                     </x-form-input>
                                     <div class=" flex justify-end">
                                         <div class=" flex justify-between gap-5">
-                                            <x-tag> Nilai Jawaban: {{ $questionAnswer['answer']['score'] }}</x-tag>
-                                            <x-tag> Kemiripan Jawaban: {{ '-' }}</x-tag>
+                                            <x-tag> Nilai Jawaban: {{ round($questionAnswer['answer']['score'], 2) }}</x-tag>
+                                            <x-tag class=" border-2 border-primary-700 bg-primary-600 text-white"> Kemiripan Jawaban: {{ (round($questionAnswer['answer']['score']/$questionAnswer['question']['weight'],4)*100).'%' }}</x-tag>
                                         </div>
                                     </div>
                                 </div>

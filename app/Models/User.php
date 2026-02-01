@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
+use function PHPUnit\Framework\returnArgument;
 
 class User extends Authenticatable
 {
@@ -45,8 +46,51 @@ class User extends Authenticatable
         return $this->admin()->exists();
     }
 
+    //Profile Identity function
+
+    public function getUserProfileName()
+    {
+
+        if ($this->isAdmin()) {
+
+            return $this->admin->name;
+        }
+
+        if ($this->isTeacher()) {
+
+            return $this->teacher->name;
+        }
+
+        if ($this->isStudent()) {
+
+            return $this->student->name;
+        }
+
+        return 'Unknown';
+
+    }
+
+    public function getUserIdentifier()
+    {
 
 
+        if ($this->isAdmin()) {
+
+            return $this->email;
+        }
+
+        if ($this->isTeacher()) {
+
+            return $this->teacher->nip;
+        }
+
+        if ($this->isStudent()) {
+
+            return $this->student->nis;
+        }
+
+        return 'Unknown';
+    }
 
 
     /**

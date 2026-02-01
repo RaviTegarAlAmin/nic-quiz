@@ -47,7 +47,7 @@
                                 </div>
                             @endif
                         @elseif ($assignment->status == 'finished')
-                            <x-link-button class="rounded-md px-3">
+                            <x-link-button class="rounded-md px-3" :target="route('student.exams.result',[ 'assignment' => $assignment])">
                                 <span>
                                 </span>
                                 Lihat Hasil

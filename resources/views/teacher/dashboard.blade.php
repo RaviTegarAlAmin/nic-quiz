@@ -1,11 +1,11 @@
 @extends('layout.main')
 
 @section('main-content')
+
     <div class="p-6">
         <!-- Header -->
-        <div class="bg-gradient-to-r from-secondary-400 to-secondary-300 rounded-lg shadow-lg px-6 py-4 mb-6">
-            <h1 class="text-white text-2xl font-bold">DASHBOARD</h1>
-        </div>
+
+        <x-header>DASHBOARD</x-header>
 
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -14,7 +14,15 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500 text-sm mb-1">Mapel</p>
-                        <p class="text-3xl font-bold text-gray-800">5BK</p>
+                        <p class="text-3xl font-bold text-gray-800">
+                            @foreach ($courses as $index => $course)
+                                {{ $course->name }}
+                                <span>
+                                    {{ count($courses) == $index + 1 ? '' : ',' }}
+                                </span>
+                            @endforeach
+
+                        </p>
                     </div>
                     <div class="bg-secondary-400/10 p-3 rounded-lg">
                         <svg class="w-8 h-8 text-secondary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -49,8 +49,8 @@ class Timer extends Component
 
         $this->duration = $examDuration - $durationUsedMinutes;
 
-        //Test duration
-        $this->duration = 1;
+       /*  //Test duration
+        $this->duration = 1; */
 
         $this->hour = (int) ($this->duration / 60);
 

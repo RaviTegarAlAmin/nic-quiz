@@ -14,9 +14,11 @@
             <p class=" font-semibold text-xl mb-4 text-center">{{ $message }}</p>
             <div class=" flex gap-2">
                 {{ $slot }}
-                <x-submit-button type="button"
-                    class=" bg-white !text-black border border-secondary-400 hover:bg-gray-400 hover:border-gray-400"
-                    x-on:click="modal = !modal">Tidak</x-submit-button>
+                <button
+                x-on:click="modal = !modal"
+                class="bg-white font-semibold px-1 py-1 w-full border-2 border-transparent hover:border-secondary-500">
+                Tidak
+                </button>
             </div>
         </x-card>
     @endif

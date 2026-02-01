@@ -68,11 +68,11 @@
                         <div class=" row-span-2 col-span-3">
                             <x-label>Pertanyaan</x-label>
                             <x-form-input type="textarea"
-                                wire:model.live="questions.{{ $index }}.question"></x-form-input>
+                                wire:model.live.debounce.500ms="questions.{{ $index }}.question"></x-form-input>
                         </div>
                         <div>
                             <x-label>Tipe Soal</x-label>
-                            <select wire:model.live="questions.{{ $index }}.type" id="question.type"
+                            <select wire:model.live.debounce.500ms="questions.{{ $index }}.type" id="question.type"
                                 class="w-full border border-slate-400 focus:border-primary-100 focus:ring-1 focus:ring-primary-400 shadow-sm hover:shadow-md rounded-sm text-sm font-normal py-1 px-2 focus:outline-none">
                                 @foreach ($typeList as $label => $type)
                                     <option value="{{ $type }}">{{ $label }}</option>
@@ -81,7 +81,7 @@
                         </div>
                         <div class="mb-4">
                             <x-label>Bobot</x-label>
-                            <x-form-input min="1" type="number" wire:model.live="questions.{{ $index }}.weight" />
+                            <x-form-input min="1" type="number" wire:model.live.debounce.500ms="questions.{{ $index }}.weight" />
                             @error('weight')
                                 {{ $message }}
                             @enderror
@@ -94,7 +94,7 @@
                                         <div x-data="{ checkHover: false }" class=" relative group">
                                             <x-form-input type="textarea" col="30" row="2"
                                                 name="{{ $option['label'] }}"
-                                                wire:model.live="options.{{ $question['id'] }}.{{ $index }}.option"
+                                                wire:model.live.debounce.500ms="options.{{ $question['id'] }}.{{ $index }}.option"
                                                 wire:key="option-{{ $question['id'] }}-{{ $index }}"
                                                 x-bind:class="checkHover
                                                     ?
@@ -135,7 +135,7 @@
                                 <div>
                                     <x-label>Jawaban</x-label>
                                     <x-form-input type="textarea" :row="2"
-                                        wire:model.live="questions.{{ $index }}.ref_answer">
+                                        wire:model.live.debounce.500ms="questions.{{ $index }}.ref_answer">
                                     </x-form-input>
                                 </div>
                             @endif

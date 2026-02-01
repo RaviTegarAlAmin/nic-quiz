@@ -18,7 +18,15 @@ class DashboardController extends Controller
 
         $teacherData = $teacher->load(['teachings.classroom','teachings.course', 'teachings.exams']);
 
-        return view('teacher.dashboard', compact('teacherData'));
+        $teachings = $teacherData->teachings;
+
+        $courses = $teachings->pluck('course')->unique('id')->values();
+
+        $classrooms = $teachings->pluck('classroom')->unique('id')->values();
+
+        $exams = $teachings->pluck('exams');
+
+        return view('teacher.dashboard', compact(['teacherData','teachings','courses', 'classrooms' , 'exams', 'teacher']));
     }
 
     public function adminDashboard(){

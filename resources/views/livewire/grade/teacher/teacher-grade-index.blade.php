@@ -32,7 +32,7 @@
                     <p>
                         {{ 'Berakhir : ' . date_format($assignment->end_at, 'd M Y') }}
                     </p>
-                    @dump($assignment->id)
+{{--                     @dump($assignment->id) --}}
                 </x-card>
             @endforeach
         </div>
