@@ -36,7 +36,7 @@ class TeacherGradeIndex extends Component
 
         $this->examAssignments =
             ExamAssignment::where('exam_id', $examId)
-                ->with('examTakers.student.classroom', 'examTakers.grade')
+                ->with('teaching.classroom', 'examTakers.student.classroom', 'examTakers.grade')
                 ->get();
 
         $this->exam = $exam->load('questions');

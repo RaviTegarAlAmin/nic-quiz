@@ -10,6 +10,8 @@ class CosineSimilarityService
         $batchedEmbeddings = [1+]['embedding' => [student answer embedding value elements]]
         $batchedEmbeddings = [0]['embedding' => [teacher ref_answer embedding value elements]]
     */
+
+    //Main Function
     public function similarity(array $batchedEmbeddings): array
     {
         $this->similarityScores = [];
@@ -34,10 +36,7 @@ class CosineSimilarityService
         return $this->similarityScores;
     }
 
-    /**
-     * Safely extract a numeric vector from $item.
-     * Returns array of floats or null.
-     */
+
     private function extract_vector($item): ?array
     {
         if ($item === null) {
@@ -58,10 +57,7 @@ class CosineSimilarityService
         return null;
     }
 
-    /**
-     * Ensure all elements are floats and remove non-numeric entries. This wont affect anything
-     * If the OpenAI embedding return correct embedding vectors.
-     */
+
     private function normalize_vector(array $vec): ?array
     {
         $out = [];
@@ -76,9 +72,7 @@ class CosineSimilarityService
         return count($out) ? $out : null;
     }
 
-    /**
-     * Return vector length for denominator on cosine similarity formula
-     */
+
     public function vector_length(?array $vector): float
     {
         if ($vector === null) {

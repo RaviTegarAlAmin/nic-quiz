@@ -86,8 +86,7 @@
 
                 <h2 class="text-3xl font-bold mb-2">System Administration</h2>
                 <p class="text-white/90 text-center max-w-xs">
-                    Full access to manage users, courses, classrooms,
-                    and system configurations.
+                    Manage users, courses, and classrooms
                 </p>
             </div>
 

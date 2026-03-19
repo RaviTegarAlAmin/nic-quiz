@@ -1,3 +1,7 @@
-<div>
-    <!-- Very little is needed to make a happy life. - Marcus Aurelius -->
-</div>
+@extends('layout.main')
+
+@section('main-content')
+
+    <livewire:admin.teacher.index-teacher />
+
+@endsection

@@ -45,17 +45,10 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 container mt-10">
             @foreach ($exams as $exam)
                 <x-card class="hover:shadow-lg transition">
-
-
-{{--                     <div>
-                        @dump($exam->id)
-                    </div> --}}
-
-                    <!-- Title & Course -->
                     <div class="flex justify-between items-start mb-4">
                         <div>
                             <x-label class="mb-2 hover:underline block">
-                                <a href="{{ route('exams.edit', ['exam' => $exam]) }}">
+                                <a href="{{ route('teacher.exams.grade.index', ['exam' => $exam]) }}">
                                     {{ $exam->title }}
                                 </a>
                             </x-label>

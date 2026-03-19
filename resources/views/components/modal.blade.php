@@ -14,11 +14,11 @@
             <p class=" font-semibold text-xl mb-4 text-center">{{ $message }}</p>
             <div class=" flex gap-2">
                 {{ $slot }}
-                <button
+                <x-button
                 x-on:click="modal = !modal"
-                class="bg-white font-semibold px-1 py-1 w-full border-2 border-transparent hover:border-secondary-500">
+                class="w-full" variant="white">
                 Tidak
-                </button>
+                </x-button>
             </div>
         </x-card>
     @endif

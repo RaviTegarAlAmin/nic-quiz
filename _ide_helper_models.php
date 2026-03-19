@@ -45,25 +45,28 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property int $exam_taker_id
  * @property int $question_id
- * @property int $student_id
  * @property string|null $answer
  * @property float|null $score
+ * @property int|null $marked
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Embedding|null $embedding
+ * @property-read \App\Models\ExamTaker $examTaker
  * @property-read \App\Models\Question $question
- * @property-read \App\Models\Student $student
+ * @property-read \App\Models\Student|null $student
  * @method static \Database\Factories\AnswerFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Answer newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Answer newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Answer query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Answer whereAnswer($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Answer whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Answer whereExamTakerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Answer whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Answer whereMarked($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Answer whereQuestionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Answer whereScore($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Answer whereStudentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Answer whereUpdatedAt($value)
  */
 	class Answer extends \Eloquent {}
@@ -74,20 +77,23 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property string $grade
  * @property string $name
+ * @property int $capacity
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CourseClassroom> $courseClassrooms
- * @property-read int|null $course_classrooms_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Course> $courses
- * @property-read int|null $courses_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Student> $students
  * @property-read int|null $students_count
+ * @property-read \App\Models\Teaching|null $teaching
  * @method static \Database\Factories\ClassroomFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Classroom femaleStudents()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Classroom maleStudents()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Classroom newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Classroom newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Classroom query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Classroom whereCapacity($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Classroom whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Classroom whereGrade($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Classroom whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Classroom whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Classroom whereUpdatedAt($value)
@@ -105,8 +111,6 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Classroom> $classrooms
  * @property-read int|null $classrooms_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CourseClassroom> $courseClasrooms
- * @property-read int|null $course_clasrooms_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Exam> $exams
  * @property-read int|null $exams_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Teacher> $teachers
@@ -123,29 +127,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Course whereUpdatedAt($value)
  */
 	class Course extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * 
- *
- * @property int $id
- * @property int $classroom_id
- * @property int $course_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Classroom $classroom
- * @property-read \App\Models\Course $course
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CourseClassroom newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CourseClassroom newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CourseClassroom query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CourseClassroom whereClassroomId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CourseClassroom whereCourseId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CourseClassroom whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CourseClassroom whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CourseClassroom whereUpdatedAt($value)
- */
-	class CourseClassroom extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -177,32 +158,29 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property int $teacher_id
  * @property int $course_id
- * @property string $title
- * @property string $start_at
- * @property string $end_at
- * @property int $duration
- * @property string $status
+ * @property string|null $title
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Course $course
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Grade> $grades
- * @property-read int|null $grades_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ExamAssignment> $examAssignments
+ * @property-read int|null $exam_assignments_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Question> $questions
  * @property-read int|null $questions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Student> $students
  * @property-read int|null $students_count
+ * @property-read \App\Models\Teacher $teacher
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Teaching> $teachings
+ * @property-read int|null $teachings_count
  * @method static \Database\Factories\ExamFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Exam newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Exam newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Exam query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Exam whereCourseId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Exam whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Exam whereDuration($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Exam whereEndAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Exam whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Exam whereStartAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Exam whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Exam whereTeacherId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Exam whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Exam whereUpdatedAt($value)
  */
@@ -215,23 +193,97 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $exam_id
+ * @property int $teaching_id
+ * @property \Illuminate\Support\Carbon|null $start_at
+ * @property \Illuminate\Support\Carbon|null $end_at
+ * @property int|null $duration
+ * @property string $status
+ * @property int $published
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Exam $exam
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ExamTaker> $examTakers
+ * @property-read int|null $exam_takers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Student> $students
+ * @property-read int|null $students_count
+ * @property-read \App\Models\Teaching $teaching
+ * @method static \Database\Factories\ExamAssignmentFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamAssignment newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamAssignment newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamAssignment query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamAssignment whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamAssignment whereDuration($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamAssignment whereEndAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamAssignment whereExamId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamAssignment whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamAssignment wherePublished($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamAssignment whereStartAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamAssignment whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamAssignment whereTeachingId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamAssignment whereUpdatedAt($value)
+ */
+	class ExamAssignment extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $exam_assignment_id
  * @property int $student_id
+ * @property \Illuminate\Support\Carbon $start_at
+ * @property \Illuminate\Support\Carbon|null $finished_at
+ * @property int|null $duration_used
+ * @property string $status
+ * @property \Illuminate\Support\Carbon|null $last_active_at
+ * @property string|null $ip_address
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Answer> $answers
+ * @property-read int|null $answers_count
+ * @property-read \App\Models\Exam|null $exam
+ * @property-read \App\Models\ExamAssignment $examAssignment
+ * @property-read \App\Models\Grade|null $grade
+ * @property-read \App\Models\Student $student
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamTaker newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamTaker newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamTaker query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamTaker whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamTaker whereDurationUsed($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamTaker whereExamAssignmentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamTaker whereFinishedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamTaker whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamTaker whereIpAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamTaker whereLastActiveAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamTaker whereStartAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamTaker whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamTaker whereStudentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExamTaker whereUpdatedAt($value)
+ */
+	class ExamTaker extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $exam_taker_id
  * @property float $exam_score
  * @property string|null $feedback
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Exam $exam
- * @property-read \App\Models\Student $student
+ * @property-read \App\Models\ExamTaker|null $examtaker
  * @method static \Database\Factories\GradeFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade whereExamId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade whereExamScore($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade whereExamTakerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade whereFeedback($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade whereStudentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Grade whereUpdatedAt($value)
  */
 	class Grade extends \Eloquent {}
@@ -242,15 +294,45 @@ namespace App\Models{
  * 
  *
  * @property int $id
- * @property int $exam_id
- * @property int $teacher_id
- * @property string $question
- * @property string $type
- * @property int $weight
- * @property string $ref_answer
- * @property string $ref_answer_embed
+ * @property int $question_id
+ * @property int|null $label
+ * @property string|null $option
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Question $question
+ * @method static \Database\Factories\OptionFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Option newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Option newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Option query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Option whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Option whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Option whereLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Option whereOption($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Option whereQuestionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Option whereUpdatedAt($value)
+ */
+	class Option extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $exam_id
+ * @property int $teacher_id
+ * @property string|null $question
+ * @property string|null $type
+ * @property int $weight
+ * @property string|null $ref_answer
+ * @property string|null $ref_answer_embed
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Answer> $answers
+ * @property-read int|null $answers_count
+ * @property-read \App\Models\Exam $exam
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Option> $options
+ * @property-read int|null $options_count
  * @method static \Database\Factories\QuestionFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Question newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Question newQuery()
@@ -286,8 +368,8 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Answer> $answers
  * @property-read int|null $answers_count
  * @property-read \App\Models\Classroom|null $classroom
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Exam> $exams
- * @property-read int|null $exams_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ExamAssignment> $examAssignments
+ * @property-read int|null $exam_assignments_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Grade> $grades
  * @property-read int|null $grades_count
  * @property-read \App\Models\User $user
@@ -353,13 +435,21 @@ namespace App\Models{
  * @property int $id
  * @property int $course_id
  * @property int $teacher_id
+ * @property int $classroom_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Classroom $classroom
  * @property-read \App\Models\Course $course
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ExamAssignment> $examAssignments
+ * @property-read int|null $exam_assignments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Exam> $exams
+ * @property-read int|null $exams_count
  * @property-read \App\Models\Teacher $teacher
+ * @method static \Database\Factories\TeachingFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Teaching newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Teaching newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Teaching query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Teaching whereClassroomId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Teaching whereCourseId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Teaching whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Teaching whereId($value)

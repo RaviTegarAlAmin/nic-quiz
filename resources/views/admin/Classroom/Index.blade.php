@@ -3,7 +3,6 @@
 @section('main-content')
 
 
-
     @if ($classrooms)
         <!-- Header -->
         <div
@@ -50,12 +49,12 @@
 
                     <!-- Title & Grade -->
                     <div class="flex justify-between items-start mb-4">
-                            <x-tag class="mb-2 hover:underline block">
-                                {{ $classroom->name }}
-                            </x-tag>
-                            <x-label class="text-sm text-slate-600">
-                                 Kapasitas: {{ $classroom->capacity }} Siswa
-                            </x-label>
+                        <x-tag class="mb-2 hover:underline block">
+                            {{ $classroom->name }}
+                        </x-tag>
+                        <x-label class="text-sm text-slate-600">
+                            Kapasitas: {{ $classroom->capacity }} Siswa
+                        </x-label>
                     </div>
 
                     <div>
@@ -77,12 +76,11 @@
                             Diperbaharui Pada {{ date_format($classroom->updated_at, 'd-m-y ') }}
                         </p>
 
-                        <div x-data="{ modal: false, modalform : false }" class="flex gap-3">
-                            <p   x-on:click="modalform = !modalform"
-                                class="text-slate-400 hover:text-secondary-400 transition" title="Sunting Kelas">
-                                <svg
-
-                                    xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                        <div x-data="{ modal: false, modalform: false }" class="flex gap-3">
+                            <p x-on:click="modalform = !modalform"
+                                class="text-slate-400 hover:text-secondary-400 transition hover:cursor-pointer"
+                                title="Sunting Kelas">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round">
                                     <path
@@ -92,8 +90,8 @@
                             </p>
 
                             <div x-show="modalform" x-cloak>
-                                <x-modal-form formTarget="admin.classroom.edit">
-                                    Ubah Data Kelas
+                                <x-modal-form formName="Ubah Data Kelas">
+                                    @livewire('admin.classroom.edit-classroom', ['classroom' => $classroom])
                                 </x-modal-form>
                             </div>
 
@@ -117,7 +115,8 @@
                                     @csrf
                                     @method('DELETE')
 
-                                    <x-submit-button class=" bg-danger-600/80 w-full border-2 border-transparent hover:border-danger-800 hover:bg-danger-700/80"
+                                    <x-submit-button
+                                        class=" bg-danger-600/60 w-full border-2 border-transparent hover:border-danger-900/60 hover:bg-danger-900/80"
                                         x-on:click="modal=!modal">Ya</x-submit-button>
 
                                 </form>
@@ -134,7 +133,7 @@
     @else
         <div class="text-center text-slate-400 py-10">
             <p class="mb-4">Tidak ada kelas</p>
-            <hr class="mx-auto w-3/4 h-0.5 bg-secondary-300">
+            <hr class=" mx-auto w-3/4 h-0.5 bg-secondary-300">
         </div>
     @endif
 

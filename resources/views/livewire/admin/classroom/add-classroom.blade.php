@@ -43,6 +43,8 @@
                 <x-submit-button class=" bg-success-700 border-2 border-transparent hover:border-success-800 hover:bg-success-700" wire:click="addClassroom"
                     x-on:click="modal=!modal">Ya</x-submit-button>
             </x-modal>
+
+        </div>
     </x-card>
 
 

@@ -12,7 +12,7 @@ class ModalForm extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public ?string $formTarget = ''
+        public string $formName = ''
     )
     {
         //

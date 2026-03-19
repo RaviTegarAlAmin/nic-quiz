@@ -10,7 +10,7 @@
     @livewireStyles
 </head>
 
-<body class=" bg-primary-500">
+<body class=" bg-white">
     <div x-data="{ showSidebar: false }" class="relative flex w-full flex-col md:flex-row">
         <!-- This allows screen readers to skip the sidebar and go directly to the main content. -->
         <a class="sr-only" href="#main-content">skip to the main content</a>
@@ -42,7 +42,7 @@
         </nav>
 
         <!-- main content  -->
-        <div id="main-content" class="h-svh  w-full overflow-y-auto p-4 bg-primary-300 dark:bg-neutral-950">
+        <div id="main-content" class="h-svh  w-full overflow-y-auto p-4 bg-white dark:bg-neutral-950">
             @yield('main-content')
         </div>
 

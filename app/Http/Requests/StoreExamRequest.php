@@ -30,8 +30,8 @@ class StoreExamRequest extends FormRequest
             'start_at' => ['required','date',Rule::date()->after(now()->addMinute())],
             'end_at' => ['required', 'date', 'after:start_at'],
             'duration' => 'required|integer|min:30',
-            'course_id' => 'required|integer|exists:courses,id',
-            'something' => 'required|integer|min:7|max:9'
+            'course_id' => 'required|integer|uniq',
+            'something' => 'in:something,something else'
         ];
     }
 }

@@ -13,6 +13,7 @@
         'warning' => 'bg-warning-500 text-white border border-warning-600 hover:bg-warning-600 focus:ring-warning-400 border-b-4 border-b-warning-600 hover:border-b-transparent',
         'secondary' => 'bg-secondary-400 text-white border border-secondary-600 hover:bg-secondary-600 focus:ring-secondary-400 border-b-4 border-b-secondary-600 hover:border-b-transparent',
         'outline' => 'text-secondary-400 border border-secondary-400 hover:bg-secondary-100 focus:ring-secondary-400',
+        'white' => 'bg-white font-semibold border-2 border-transparent hover:border-gray-500',
         default => 'bg-primary-500 text-white border border-primary-600 hover:bg-primary-600 focus:ring-primary-400 border-b-4 border-b-primary-600 hover:border-b-transparent',
     };
 @endphp

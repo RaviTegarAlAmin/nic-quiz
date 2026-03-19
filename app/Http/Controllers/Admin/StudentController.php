@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\admin\student\StudentsExport;
 use App\Http\Controllers\Controller;
+use App\Models\Classroom;
+use App\Models\Student;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StudentController extends Controller
 {
@@ -12,7 +16,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        //
+
+        return view('admin.student.index');
     }
 
     /**
@@ -62,4 +67,6 @@ class StudentController extends Controller
     {
         //
     }
+
+
 }

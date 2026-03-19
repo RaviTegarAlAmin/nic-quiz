@@ -1,4 +1,3 @@
-{{-- THIS IS MOVED FROM ADD EXAM AFTER MIGRATING NEW EXAMASSINGMENT MODEL --}}
 <div >
     <x-card x-data="{ modal: false }">
         <div class="grid grid-cols-3 gap-3">

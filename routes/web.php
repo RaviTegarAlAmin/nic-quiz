@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\TeachingController;
+use App\Http\Controllers\AdminImportExportController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\DashboardController;
@@ -61,7 +62,7 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    Route::prefix('admin')->name('admin.')->middleware('admin')->group(function(){
+    Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
 
         Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'dashboard'])->name('dashboard');
         Route::resource('/teachers', TeacherController::class);
@@ -69,6 +70,9 @@ Route::middleware('auth')->group(function () {
         Route::resource('/classrooms', \App\Http\Controllers\Admin\ClassroomController::class);
         Route::resource('/courses', CourseController::class);
         Route::resource('/teachings', TeachingController::class);
+
+        //Import and Export for Admin Route
+        Route::get('/download/classroom/{classroomId}/students', [AdminImportExportController::class, 'exportClassroomStudents'])->name('download.classroom.students');
     });
 
 });

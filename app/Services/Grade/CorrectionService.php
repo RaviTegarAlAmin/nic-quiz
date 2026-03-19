@@ -20,8 +20,6 @@ class CorrectionService
 
     private array $similarityScores = [];
 
-    //just to check inputs and match the exam taker Id, dummy variables
-    public array $dummy_inputs = [];
 
     public function __construct(
         private OpenAIEmbeddingService $openAIembedding,
@@ -185,7 +183,7 @@ class CorrectionService
             ];
         }
 
-      /*   dd($this->similarityScores, $this->batchedEssay, $this->bulkUpdateEssay, $bulkUpdate, $bulkScoreByExamTaker, $bulkScore); */
+         dd($this->similarityScores, $this->batchedEssay, $this->bulkUpdateEssay, $bulkUpdate, $bulkScoreByExamTaker, $bulkScore);
 
 
         if ($bulkUpdate != null) {
@@ -233,7 +231,6 @@ class CorrectionService
 
             $inputs = array_merge([$ref_answer], $inputs);
 
-            $this->dummy_inputs[] = $inputs;
 
             //embedding per question
 

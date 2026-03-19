@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Classroom extends Model
@@ -17,15 +18,24 @@ class Classroom extends Model
 
     //Relation to other models
 
-    public function students() :HasMany {
+    public function students(): HasMany
+    {
         return $this->hasMany(Student::class);
     }
 
-    public function courseClassrooms() : HasMany {
-        return $this->hasMany(CourseClassroom::class);
+    public function teaching(): BelongsTo
+    {
+        return $this->belongsTo(Teaching::class);
     }
 
-    public function courses() {
-        return $this->belongsToMany(Course::class, 'course_classrooms');
+    //Query Builder
+    protected function scopemaleStudents()
+    {
+        return $this->students->where('gender', 'Laki-Laki')->count();
+    }
+
+    protected function scopefemaleStudents()
+    {
+        return $this->students->where('gender', 'Perempuan')->count();
     }
 }

@@ -11,21 +11,25 @@ class Teacher extends Model
     /** @use HasFactory<\Database\Factories\TeacherFactory> */
     use HasFactory;
 
-    protected $fillable = ['nip','name','gender','born_date','address'];
+    protected $fillable = ['user_id', 'nip', 'name', 'gender', 'born_date', 'address'];
 
-    public function teachings() {
+    public function teachings()
+    {
         return $this->hasMany(Teaching::class);
     }
 
-    public function courses() {
-        return $this->belongsToMany(Course::class,'teachings')->withTimestamps();
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'teachings')->withTimestamps();
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function questions(){
+    public function questions()
+    {
         return $this->hasMany(Question::class);
     }
 

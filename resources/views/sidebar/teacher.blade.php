@@ -80,7 +80,7 @@
             </svg>
         </div>
         <span
-            class="{{ request()->routeIs('classrooms*') || request()->routeIs('teacher.classrooms*') ? 'font-semibold' : 'font-medium' }}">Exams</span>
+            class="{{ request()->routeIs('classrooms*') || request()->routeIs('teacher.classrooms*') ? 'font-semibold' : 'font-medium' }}">Classrooms</span>
         @if (request()->routeIs('classrooms*') || request()->routeIs('teacher.classrooms*'))
             <span class="sr-only">active</span>
         @endif

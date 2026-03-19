@@ -3,8 +3,10 @@
         Penilaian {{ $exam->title }}
     </x-header>
 
+
+
     <x-tag class=" md:w-32 text-center mb-4">
-        Penugasan
+        Daftar Kelas
     </x-tag>
 
     {{-- Assignment Card List --}}
@@ -14,13 +16,13 @@
             @foreach ($examAssignments as $assignment)
                 <x-card @class([
                     ' w-64 cursor-pointer hover:shadow-xl border-2 border-l-4 border-gray-100 border-r-gray-200 hover:border-secondary-400 hover:rotate-1 transition-all ease-in-out',
-                    'bg-secondary-400' =>
+                    'border-r-secondary-400 border-secondary-400 shadow-md' =>
                         $currentAssignment != null && $currentAssignment->id == $assignment->id,
                 ]) wire:key="assignment-{{ $assignment->id }}"
                     wire:click="changeCurrentAssignment({{ $assignment->id }})">
                     <div class=" flex justify-between mb-4">
                         <x-class-status-tag class=" !text-secondary-400">
-                            {{ $assignment->examTakers->first()?->student?->classroom?->name }}
+                            {{ $assignment->teaching?->classroom?->name ?? 'Tidak ada kelas' }}
                         </x-class-status-tag>
                         <x-tag>
                             {{ $assignment->duration }}
@@ -32,7 +34,7 @@
                     <p>
                         {{ 'Berakhir : ' . date_format($assignment->end_at, 'd M Y') }}
                     </p>
-{{--                     @dump($assignment->id) --}}
+
                 </x-card>
             @endforeach
         </div>
@@ -47,14 +49,17 @@
                     <p class=" m-2">Peserta Ujian {{ $currentAssignment->examTakers->count() }}</p>
                     <p class=" m-2"> Waktu Mulai: {{ $currentAssignment->start_at }} </p>
                 </div>
-                <div class="flex items-center justify-center h-32" wire:loading>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"
-                        class="size-7 fill-primary motion-safe:animate-spin dark:fill-primary-dark">
-                        <path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"
-                            opacity=".25" />
-                        <path
-                            d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z" />
-                    </svg>
+                <div class="h-32 relative w-full -mx-4 -my-4" wire:loading>
+                    <div class="absolute left-1/2 top-1/2">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"
+                            class="size-10 fill-secondary-400 motion-safe:animate-spin dark:fill-primary-dark">
+                            <path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"
+                                opacity=".25" />
+                            <path
+                                d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z" />
+                        </svg>
+                    </div>
+
                 </div>
             @else
                 <div class=" py-14 text-center text-gray-400 text-lg">
@@ -115,7 +120,7 @@
 
                             <td class=" border px-4 py-2 whitespace-nowrap text-left flex justify-between">
                                 <a href="" class=" hover:underline hover:text-seondary-400">
-                                    {{ $examTaker->student->name.' id: '.$examTaker->student->id }}
+                                    {{ $examTaker->student->name . ' id: ' . $examTaker->student->id }}
                                 </a>
 
                                 <div>

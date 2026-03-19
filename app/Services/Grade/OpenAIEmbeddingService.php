@@ -23,7 +23,7 @@ class OpenAIEmbeddingService {
 
         $batchedEmbeddings = [];
 
-        //Separating from null since frickin OpenAI cannot receive null value
+        //Separating from null since  OpenAI cannot receive null value
 
         $cleanInputs = array_values(array_filter($inputs, fn($i) => !empty($i)));
 
@@ -57,6 +57,8 @@ class OpenAIEmbeddingService {
                 ];
             }
         }
+
+
 
         return $batchedEmbeddings;
 
