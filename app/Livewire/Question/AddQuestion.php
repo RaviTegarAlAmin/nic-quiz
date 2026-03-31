@@ -37,6 +37,8 @@ class AddQuestion extends Component
             ];
         } */
 
+
+
     public function mount(Exam $exam)
     {
         $this->exam = $exam->load('questions.options');
@@ -138,10 +140,8 @@ class AddQuestion extends Component
                 Option::where('question_id', $questionId)->delete();
                 unset($this->options[$questionId]);
             } elseif ($value === 'multiple_choice') {
-
                 $options = [];
                 for ($i = 1; $i <= 4; $i++) {
-
                     $options[] = Option::create([
                         'question_id' => $questionId,
                         'label' => $i,
@@ -239,6 +239,10 @@ class AddQuestion extends Component
         ]);
 
         $this->refreshQuestions();
+    }
+
+    public function testContent(int $index){
+        dd($this->questions[$index]['question']);
     }
 
 

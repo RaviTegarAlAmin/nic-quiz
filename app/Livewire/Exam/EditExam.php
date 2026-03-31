@@ -39,6 +39,8 @@ class EditExam extends Component
         $this->exam->update($validated);
 
         $this->examlocked = true;
+
+        $this->dispatch('exam-title-updated', title: $this->exam->title);
     }
 
     public function unlockExam(){

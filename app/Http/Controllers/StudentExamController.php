@@ -15,12 +15,9 @@ class StudentExamController extends Controller
 {
     public function index()
     {
-        $user = auth()->user();
-        $student = $user->student;
-
-
 
         $student = auth()->user()->student;
+
 
         $assignments = ExamAssignment::with([
             'exam.questions.options',
@@ -36,8 +33,6 @@ class StudentExamController extends Controller
             ->orderBy('end_at')
             ->latest()
             ->get();
-
-
 
 
         return view('exam.student', compact('assignments', 'student'));
@@ -65,23 +60,31 @@ class StudentExamController extends Controller
             ->get();
 
         $mcqQuestions =
-        $questionAnswers
-        ->filter(fn ($answer) => $answer->question && $answer->question->type == 'multiple_choice')->count();
+            $questionAnswers
+                ->filter(fn($answer) => $answer->question && $answer->question->type == 'multiple_choice')->count();
 
         $essayQuestions =
-        $questionAnswers
-        ->filter(fn ($answer) => $answer->question && $answer->question->type == 'essay')->count();
+            $questionAnswers
+                ->filter(fn($answer) => $answer->question && $answer->question->type == 'essay')->count();
 
-        return view('exam.student-result', compact(['student', 'examTaker', 'assignment', 'questionAnswers', 'mcqQuestions', 'essayQuestions','questions']));
+        return view('exam.student-result', compact(['student', 'examTaker', 'assignment', 'questionAnswers', 'mcqQuestions', 'essayQuestions', 'questions']));
     }
 
     //Control examtaker
     public function startAttempt(ExamAssignment $assignment)
     {
 
-        try {
+        $student = auth()->user()->student;
 
-            $student = auth()->user()->student;
+        if ($assignment->teaching->classroom_id !== $student->classroom_id) {
+            abort(403, 'Siswa tidak memiliki akses ke ujian ini');
+        }
+
+        if (in_array($assignment->status, ['finished', 'on_hold'])) {
+            return redirect()->back()->with('error', 'Ujian tidak dapat dimulai');
+        }
+
+        try {
 
             $examTaker = ExamTaker::firstOrCreate(
                 [
@@ -97,7 +100,7 @@ class StudentExamController extends Controller
                 ]
             );
 
-            return redirect()->route('exams.attempt', ['examTakerId' => $examTaker->id]);
+            return redirect()->route('exam-attempt', ['examTakerId' => $examTaker->id]);
 
         } catch (\Throwable $th) {
             dd('gagal');

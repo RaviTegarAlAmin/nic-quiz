@@ -13,7 +13,12 @@ class Question extends Model
 
     public static array $type = ['multiple_choice', 'essay'];
 
-    protected $fillable = ['exam_id', 'teacher_id', 'question', 'type', 'weight', 'ref_answer'];
+    protected $fillable = ['exam_id', 'teacher_id', 'question', 'question_delta', 'is_rich_text', 'type', 'weight', 'ref_answer'];
+
+    protected $casts = [
+        'question_delta' => 'array',
+        'is_rich_text' => 'boolean',
+    ];
 
     public function exam()
     {

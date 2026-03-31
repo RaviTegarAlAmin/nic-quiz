@@ -94,8 +94,10 @@ class ExamController extends Controller
      */
     public function edit(Exam $exam)
     {
+        $teacher = auth()->user()->teacher;
+        $questions = $exam->questions->load('options');
 
-        return view('exam.edit', ['exam' => $exam]);
+        return view('exam.edit', ['exam' => $exam, 'questions' => $questions, 'teacher' => $teacher]);
     }
 
     /**

@@ -10,7 +10,10 @@ use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExamAssignmentController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\student\exam\ExamAttemptConroller;
+use App\Http\Controllers\student\exam\ExamAttemptController;
 use App\Http\Controllers\StudentExamController;
+use App\Http\Controllers\teacher\exam\QuestionEditorController;
 use App\Http\Controllers\TeacherClassroomController;
 use App\Http\Controllers\TeacherGradeController;
 use App\Http\Middleware\EnsureTeacher;
@@ -41,6 +44,9 @@ Route::middleware('auth')->group(function () {
             Route::post('/{assignment}/attempt', [StudentExamController::class, 'startAttempt'])->name('student.exams.start');
             Route::get('/attempt/{examTakerId}', ExamAttempt::class)->name('exams.attempt');
             Route::get('/assignment/{assignment}/result', [StudentExamController::class, 'result'])->name('student.exams.result');
+            Route::get('/exam-attempt/{examTakerId}', [ExamAttemptController::class, 'examAttempt'])->name('exam-attempt');
+            Route::post('/exam-attempt/autosave', [ExamAttemptController::class, 'autoSave'])->name('exam-attempt.autosave');
+            Route::post('/exam-attempt/submit', [ExamAttemptController::class, 'submitExam'])->name('exam-attempt.submit');
         });
     });
 
@@ -55,6 +61,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [ExamController::class, 'indexTeacher'])->name('exams');
             Route::get('{exam}/grades', [TeacherGradeController::class, 'index'])->name('teacher.exams.grade.index');
             Route::get('{exam}/assignment/{assignment}/correction', [TeacherGradeController::class, 'correction'])->name('teacher.exams.grade.correction');
+            Route::post('/autosave',[QuestionEditorController::class, 'autoSave'])->name('teacher.exams.question-editr');
 
         });
         Route::prefix('classrooms')->group(function () {
@@ -73,6 +80,7 @@ Route::middleware('auth')->group(function () {
 
         //Import and Export for Admin Route
         Route::get('/download/classroom/{classroomId}/students', [AdminImportExportController::class, 'exportClassroomStudents'])->name('download.classroom.students');
+        Route::get('/download/teachers', [AdminImportExportController::class, 'exportTeachers'])->name('download.teachers');
     });
 
 });

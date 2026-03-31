@@ -51,6 +51,7 @@ class AddTeacher extends Component
                 ]);
             });
 
+
             $this->reset('name', 'nip', 'gender', 'born_date', 'address');
             $this->resetValidation();
             $this->dispatch('refresh-teacher-table');

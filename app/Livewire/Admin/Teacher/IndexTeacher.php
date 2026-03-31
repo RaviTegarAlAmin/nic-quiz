@@ -11,6 +11,7 @@ class IndexTeacher extends Component
     public bool $modalAdd = false;
     public bool $modalEdit = false;
     public bool $modalDelete = false;
+    public bool $modalUpload = false;
     public ?int $selectedTeacherId = null;
 
     public function openAddModal(): void
@@ -22,6 +23,17 @@ class IndexTeacher extends Component
     public function closeAddModal(): void
     {
         $this->modalAdd = false;
+    }
+
+    public function openUploadModal(): void
+    {
+        $this->modalUpload = true;
+    }
+
+    #[On('close-teacher-upload')]
+    public function closeUploadModal(): void
+    {
+        $this->modalUpload = false;
     }
 
     #[On('open-teacher-edit')]

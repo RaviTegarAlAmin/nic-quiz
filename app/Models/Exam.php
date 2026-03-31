@@ -45,4 +45,11 @@ class Exam extends Model
     {
         return $this->belongsToMany(Teaching::class, 'exam_assignments');
     }
+
+    //Relation Check
+
+    public function isExamOwner(int $teacherId){
+
+        return $this->teacher_id === $teacherId;
+    }
 }

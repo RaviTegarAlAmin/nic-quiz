@@ -23,7 +23,8 @@
                         @if ($assignment->status == 'not_started')
                             <p> Dimulai {{ $assignment->start_at->locale('id')->diffForHumans() }}</p>
                         @else
-                            <x-class-status-tag :label="true" :status="$assignment->status" class=" hover:cursor-default"></x-class-status-tag>
+                            <x-class-status-tag :label="true" :status="$assignment->status"
+                                class=" hover:cursor-default"></x-class-status-tag>
                         @endif
                     </div>
 
@@ -31,7 +32,8 @@
 
                         @if ($assignment->status == 'ongoing')
                             @if ($assignment->examTakerForStudent?->isFinished())
-                                <x-submit-button class=" rounded-lg hover:bg-success-700 bg-success-600" disabled>Disubmit</x-submit-button>
+                                <x-submit-button class=" rounded-lg hover:bg-success-700 bg-success-600"
+                                    disabled>Disubmit</x-submit-button>
                             @else
                                 <div x-data="{ modal: false }">
                                     <x-submit-button x-on:click="modal = !modal" class=" px-2 rounded-md">Mulai
@@ -41,13 +43,15 @@
                                         method="POST">
                                         @csrf
                                         <x-modal :message="'Konfirmasi Mulai Ujian?'">
-                                            <x-submit-button type="submit">Mulai</x-submit-button>
+                                            <x-button type="submit" class=" w-full" variant="secondary">
+                                                Mulai
+                                            </x-button>
                                         </x-modal>
                                     </form>
                                 </div>
                             @endif
                         @elseif ($assignment->status == 'finished')
-                            <x-link-button class="rounded-md px-3" :target="route('student.exams.result',[ 'assignment' => $assignment])">
+                            <x-link-button class="rounded-md px-3" :target="route('student.exams.result', ['assignment' => $assignment])">
                                 <span>
                                 </span>
                                 Lihat Hasil
@@ -67,6 +71,15 @@
             toast: true,
             message: '{{ session('success') }}',
             type: 'success'
+        }">
+            <x-toast />
+        </div>
+    @endif
+    @if (session('error'))
+        <div x-data="{
+            toast: true,
+            message: '{{ session('error') }}',
+            type: 'failed'
         }">
             <x-toast />
         </div>

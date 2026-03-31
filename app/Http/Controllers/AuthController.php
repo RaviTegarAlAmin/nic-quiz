@@ -38,7 +38,6 @@ class AuthController extends Controller
             'password.max' => 'Username atau Password Salah'
         ]);
 
-
         $student = Student::where('nis', $credentials['username'])->first();
         $teacher = Teacher::where('nip', $credentials['username'])->first();
 

@@ -38,13 +38,27 @@
                         <td class="border px-4 py-3 text-left">{{ $teacher->address }}</td>
                         <td class="whitespace-nowrap border px-4 py-3">
                             <div class="flex items-center justify-center gap-2">
-                                <button type="button" wire:click="$dispatch('open-teacher-edit', { teacherId: {{ $teacher->id }} })"
-                                    class="rounded-md bg-amber-100 px-3 py-2 text-xs font-semibold text-amber-700 transition hover:bg-amber-200">
-                                    Edit
+                                <button type="button" title="Sunting guru"
+                                    wire:click="$dispatch('open-teacher-edit', { teacherId: {{ $teacher->id }} })"
+                                    class="rounded-md bg-warning-100 p-2 text-warning-700 transition hover:bg-warning-200 hover:text-warning-800">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+                                        <path d="m15 5 4 4" />
+                                    </svg>
                                 </button>
-                                <button type="button" wire:click="$dispatch('open-teacher-delete', { teacherId: {{ $teacher->id }} })"
-                                    class="rounded-md bg-danger-100 px-3 py-2 text-xs font-semibold text-danger-600 transition hover:bg-danger-200">
-                                    Hapus
+                                <button type="button" title="Hapus guru"
+                                    wire:click="$dispatch('open-teacher-delete', { teacherId: {{ $teacher->id }} })"
+                                    class="rounded-md bg-danger-100 p-2 text-danger-600 transition hover:bg-danger-200 hover:text-danger-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                                        <path d="M3 6h18" />
+                                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                    </svg>
                                 </button>
                             </div>
                         </td>

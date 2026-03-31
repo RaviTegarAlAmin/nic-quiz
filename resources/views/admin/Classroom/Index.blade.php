@@ -78,7 +78,7 @@
 
                         <div x-data="{ modal: false, modalform: false }" class="flex gap-3">
                             <p x-on:click="modalform = !modalform"
-                                class="text-slate-400 hover:text-secondary-400 transition hover:cursor-pointer"
+                                class="rounded-md bg-warning-100 p-2 text-warning-700 transition hover:cursor-pointer hover:bg-warning-200 hover:text-warning-800"
                                 title="Sunting Kelas">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -95,7 +95,9 @@
                                 </x-modal-form>
                             </div>
 
-                            <button type="submit" class="text-slate-400 hover:text-red-500 transition" title="Hapus Kelas"
+                            <button type="submit"
+                                class="rounded-md bg-danger-100 p-2 text-danger-600 transition hover:bg-danger-200 hover:text-danger-700"
+                                title="Hapus Kelas"
                                 x-on:click="modal = !modal">
 
                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"

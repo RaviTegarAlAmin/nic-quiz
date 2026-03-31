@@ -1,8 +1,8 @@
-<div x-show="modalform" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+<div x-show="modalform" x-cloak class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/50 p-4"
     x-on:keyup.escape.window="modalform = false">
 
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-5xl p-6 -mt-32 overflow-y-auto"
-    x-on:click.outside="modalform = false">
+    <div class="my-auto max-h-[calc(100vh-2rem)] w-full max-w-5xl overflow-y-auto rounded-lg bg-white p-6 shadow-lg"
+        x-on:click.outside="modalform = false">
         <div class="flex justify-between items-center mb-4">
 
             <h2 class="text-lg font-semibold mb-2">

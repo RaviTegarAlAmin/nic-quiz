@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\admin\teacher\TeachersExport;
 use App\Exports\admin\student\StudentsExport;
 use App\Models\Classroom;
 use Illuminate\Http\Request;
@@ -22,6 +23,13 @@ class AdminImportExportController extends Controller
     {
         $classroom = Classroom::find($classroomId);
 
+    }
+
+    public function exportTeachers()
+    {
+        $year = date('Y');
+
+        return (new TeachersExport())->download("Guru-{$year}.xlsx");
     }
 
 }

@@ -1,0 +1,31 @@
+ .student-question-viewer {
+     border: 0 !important;
+     background: transparent !important;
+ }
+
+ .student-question-viewer .ql-toolbar {
+     display: none !important;
+ }
+
+ .student-question-viewer .ql-container,
+ .student-question-viewer .ql-container.ql-snow {
+     border: 0 !important;
+     outline: 0 !important;
+     box-shadow: none !important;
+     background: transparent !important;
+ }
+
+ .student-question-viewer .ql-editor {
+     padding: 0 !important;
+     border: 0 !important;
+     outline: 0 !important;
+     box-shadow: none !important;
+     background: transparent !important;
+     overflow-y: visible !important;
+ }
+
+ .student-question-viewer .ql-editor.ql-blank::before {
+     left: 0;
+     right: 0;
+     color: transparent;
+ }

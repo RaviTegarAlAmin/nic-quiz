@@ -52,7 +52,8 @@
                            flex gap-3 text-center justify-center">
 
 
-                        <button class="text-slate-400 hover:text-secondary-400 transition" title="Sunting Ujian"
+                        <button class="rounded-md bg-warning-100 p-2 text-warning-700 transition hover:bg-warning-200 hover:text-warning-800"
+                            title="Sunting siswa"
                             wire:click="$parent.openEditModal({{ $student->id }})" type="submit">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -65,7 +66,8 @@
 
 
                         <button wire:click="$parent.openDeleteModal({{ $student->id }})" type="submit"
-                            class="text-slate-400 hover:text-red-500 transition" title="Hapus Ujian">
+                            class="rounded-md bg-danger-100 p-2 text-danger-600 transition hover:bg-danger-200 hover:text-danger-700"
+                            title="Hapus siswa">
 
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

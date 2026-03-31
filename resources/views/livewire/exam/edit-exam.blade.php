@@ -31,29 +31,24 @@
 
         @if ($examlocked)
             <div class=" flex gap-2" x-data="{ modal: false }">
-                <x-submit-button wire:click="unlockExam">Sunting Ujian</x-submit-button>
-                <x-submit-button x-on:click="modal = !modal" class=" bg-red-700 hover:bg-red-900 w-1/6">Hapus
-                    Ujian</x-submit-button>
+                <x-button class=" w-full" variant="secondary" wire:click="unlockExam">Sunting Ujian</x-button>
+                <x-button class=" w-full" variant="danger" x-on:click="modal = !modal">Hapus
+                    Ujian</x-button>
 
-                <x-modal :message="'Hapus Ujian?'">
-                    <x-submit-button class=" bg-red-700" wire:click="deleteExam">Ya</x-submit-button>
+                <x-modal message="Hapus Ujian?">
+                    <x-button class=" w-full" variant="danger" wire:click="deleteExam">Ya</x-button>
                 </x-modal>
             </div>
-            @else
-                <div class=" flex gap-2">
-                    <x-submit-button wire:click="updateExam">Simpan Perubahan</x-submit-button>
-                    <x-submit-button class=" w-1/5" wire:click="resetData">Reset Data</x-submit-button>
-                    <x-submit-button class=" w-1/5" wire:click="lockExam">Batal</x-submit-button>
-                </div>
-
+        @else
+            <div class=" flex gap-2">
+                <x-submit-button wire:click="updateExam">Simpan Perubahan</x-submit-button>
+                <x-submit-button class=" w-1/5" wire:click="resetData">Reset Data</x-submit-button>
+                <x-submit-button class=" w-1/5" wire:click="lockExam">Batal</x-submit-button>
+            </div>
         @endif
 
 
     </x-card>
-
-
-    @livewire('question.add-question', ['exam' => $exam])
-
 
 
 </div>

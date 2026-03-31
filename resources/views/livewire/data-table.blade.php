@@ -1,23 +1,35 @@
     {{--  This Data Tablse specficicay created for Exam Asssignment  --}}
-    <div class="md:overflow-x-visible overflow-x-auto">
-        <table class="table w-full border-separate border-spacing-0 drop-shadow-lg text-center rounded-lg overflow-hidden">
+    @php
+        $columnWidths = [
+            'start_at' => 'w-36 sm:w-40',
+            'end_at' => 'w-36 sm:w-40',
+            'duration' => 'w-20 sm:w-24',
+            'teaching.classroom.name' => 'w-24 sm:w-28',
+        ];
+    @endphp
+
+    <div class="w-full overflow-x-auto">
+        <table class="table-fixed min-w-[980px] w-full border-separate border-spacing-0 drop-shadow-lg text-center rounded-lg overflow-hidden">
             <thead class="bg-gray-100">
                 <tr>
                     @foreach ($columns as $column)
-                        <th class="border px-4 py-2 font-semibold text-gray-700 text-center">
+                        <th @class([
+                            'border px-3 py-2 font-semibold text-gray-700 text-center whitespace-normal break-words align-top',
+                            $columnWidths[$column['field']] ?? 'w-auto',
+                        ])>
                             {{ $column['label'] }}
                         </th>
                     @endforeach
-                    <th class="border px-4 py-2 font-semibold text-gray-700 text-center">
+                    <th class="w-32 border px-4 py-2 font-semibold text-gray-700 text-center">
                         Status
                     </th>
-                    <th class="border px-4 py-2 font-semibold text-gray-700 text-center">
+                    <th class="w-32 border px-4 py-2 font-semibold text-gray-700 text-center">
                         Published
                     </th>
-                    <th class="border px-4 py-2 font-semibold text-gray-700 text-center">
+                    <th class="w-28 border px-3 py-2 font-semibold text-gray-700 text-center">
                         Aksi
                     </th>
-                    <th class="border px-4 py-2 font-semibold text-gray-700 text-center">
+                    <th class="w-32 border px-3 py-2 font-semibold text-gray-700 text-center">
                         Ubah Status
                     </th>
                 </tr>
@@ -28,17 +40,19 @@
 
                         {{-- Generic Text Data --}}
 
-                        <td class=" border px-4 py-2 whitespace-nowrap">
-                            {{ $data->start_at->format('D, d M Y H:i') }}
+                        <td class="border px-3 py-2 whitespace-normal break-words align-top">
+                            <span class="block">{{ $data->start_at->format('D, d M Y') }}</span>
+                            <span class="block">{{ $data->start_at->format('H:i') }}</span>
                         </td>
-                        <td class=" border px-4 py-2 whitespace-nowrap">
-                            {{ date_format($data->end_at, 'D, d M Y H:i') }}
+                        <td class="border px-3 py-2 whitespace-normal break-words align-top">
+                            <span class="block">{{ date_format($data->end_at, 'D, d M Y') }}</span>
+                            <span class="block">{{ date_format($data->end_at, 'H:i') }}</span>
                         </td>
-                        <td class=" border px-4 py-2 whitespace-nowrap">
+                        <td class="border px-2 py-2 whitespace-normal break-words align-top">
                             {{ $data->duration }}
                         </td>
 
-                        <td class=" border px-4 py-2 whitespace-nowrap">
+                        <td class="border px-2 py-2 whitespace-normal break-words align-top">
                             {{ $data->teaching->classroom->name }}
                         </td>
 
@@ -54,11 +68,11 @@
                             @endif
                         </td>
                         @if ($action)
-                            <td class="border px-4 py-2">
-                                <div class="flex flex-auto justify-center gap-3">
+                        <td class="border px-3 py-2">
+                                <div class="flex justify-center gap-2">
                                     <div wire:click="publishExam({{ $data }})">
                                         <span title="Sebarkan Ujian"
-                                            class="text-slate-400 cursor-pointer hover:text-secondary-400">
+                                            class="inline-flex rounded-md bg-secondary-50 p-2 text-slate-400 cursor-pointer hover:bg-secondary-100 hover:text-secondary-400">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                                 stroke-linecap="round" stroke-linejoin="round"
@@ -72,7 +86,7 @@
                                     </div>
                                     <div wire:click="delete({{ $data }})">
                                         <span title="Hapus Pertanyaan"
-                                            class="text-slate-400 cursor-pointer hover:text-danger-500">
+                                            class="inline-flex rounded-md bg-danger-50 p-2 text-slate-400 cursor-pointer hover:bg-danger-100 hover:text-danger-500">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                                 stroke-linecap="round" stroke-linejoin="round"
@@ -91,12 +105,12 @@
                             </td>
                         @endif
 
-                        <td class="border px-4 py-2">
-                            <div class=" flex flex-auto justify-around ">
+                        <td class="border px-3 py-2">
+                            <div class="flex justify-center gap-2">
                                 @if ($data->status == 'ongoing')
                                     <div>
                                         <span title="Pause Ujian"
-                                            class=" text-warning-400 cursor-pointer hover:text-warning-300"
+                                            class="inline-flex rounded-md bg-warning-50 p-2 text-warning-500 cursor-pointer hover:bg-warning-100 hover:text-warning-600"
                                             wire:click="changeStatus({{$data->id}}, 'on_hold')">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -111,7 +125,7 @@
                                 @else
                                     <div>
                                         <span title="Jalankan Ujian"
-                                            class=" text-secondary-400 cursor-pointer hover:text-secondary-500"
+                                            class="inline-flex rounded-md bg-secondary-50 p-2 text-secondary-400 cursor-pointer hover:bg-secondary-100 hover:text-secondary-500"
                                             wire:click="changeStatus({{$data->id}}, 'ongoing')">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -126,7 +140,7 @@
 
                                 <div>
                                     <span title="Berhentikan Ujian"
-                                        class="text-danger-700 cursor-pointer hover:text-danger-800"
+                                        class="inline-flex rounded-md bg-danger-50 p-2 text-danger-700 cursor-pointer hover:bg-danger-100 hover:text-danger-800"
                                         wire:click="changeStatus({{$data->id}}, 'finished')">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
