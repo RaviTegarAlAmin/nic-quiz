@@ -7,8 +7,8 @@
             <!-- Left Side - Form -->
             <div class="p-8 lg:p-12 flex flex-col justify-center">
                 <div class="mb-6">
-                    <h1 class="text-3xl lg:text-4xl font-bold text-gray-800 mb-2">Welcome Back!</h1>
-                    <p class="text-gray-600">Sign in to continue to NIC-Quiz</p>
+                    <h1 class="text-3xl lg:text-4xl font-bold text-gray-800 mb-2">Selamat Datang!</h1>
+                    <p class="text-gray-600">Masuk ke NIC-Quiz</p>
                 </div>
 
                 <!-- Error Message -->
