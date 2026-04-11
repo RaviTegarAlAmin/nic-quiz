@@ -36,6 +36,8 @@ class EditExam extends Component
 
         $validated =  $this->validate();
 
+        $this->authorize('update', $this->exam);
+
         $this->exam->update($validated);
 
         $this->examlocked = true;

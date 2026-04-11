@@ -6,13 +6,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Traits\Models\HasEntity;
 use Illuminate\Support\Facades\Auth;
 use function PHPUnit\Framework\returnArgument;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasEntity;
+
+
 
     public function student()
     {
@@ -33,17 +36,17 @@ class User extends Authenticatable
 
     public function isStudent(): bool
     {
-        return $this->student()->exists();
+        return $this->entity() instanceof Student ;
     }
 
     public function isTeacher(): bool
     {
-        return $this->teacher()->exists();
+        return $this->entity() instanceof Teacher;
     }
 
     public function isAdmin(): bool
     {
-        return $this->admin()->exists();
+        return $this->entity() instanceof Admin;
     }
 
     //Profile Identity function
@@ -51,45 +54,13 @@ class User extends Authenticatable
     public function getUserProfileName()
     {
 
-        if ($this->isAdmin()) {
-
-            return $this->admin->name;
-        }
-
-        if ($this->isTeacher()) {
-
-            return $this->teacher->name;
-        }
-
-        if ($this->isStudent()) {
-
-            return $this->student->name;
-        }
-
-        return 'Unknown';
+        return $this->entity()?->name ?? 'Unknown';
 
     }
 
     public function getUserIdentifier()
     {
-
-
-        if ($this->isAdmin()) {
-
-            return $this->email;
-        }
-
-        if ($this->isTeacher()) {
-
-            return $this->teacher->nip;
-        }
-
-        if ($this->isStudent()) {
-
-            return $this->student->nis;
-        }
-
-        return 'Unknown';
+       return $this->entity() ? $this->email : 'Unknown';
     }
 
 

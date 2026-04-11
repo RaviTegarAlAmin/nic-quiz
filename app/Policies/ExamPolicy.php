@@ -3,17 +3,17 @@
 namespace App\Policies;
 
 use App\Models\Exam;
+use App\Models\Student;
+use App\Models\Teacher;
 use App\Models\User;
+use App\Services\User\EntityResolver;
 use Illuminate\Auth\Access\Response;
 
 class ExamPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+
+    public function __construct(protected EntityResolver $resolver)
     {
-        return false;
     }
 
     /**
@@ -21,6 +21,16 @@ class ExamPolicy
      */
     public function view(User $user, Exam $exam): bool
     {
+        $entity = $this->resolver->resolve($user);
+
+        if ($entity instanceof Student) {
+            return $entity->hasExam($exam);
+        }
+
+        if ($entity instanceof Teacher) {
+            return $entity->id === $exam->teacher_id;
+        }
+
         return false;
     }
 
@@ -29,7 +39,9 @@ class ExamPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        $entity = $this->resolver->resolve($user);
+
+        return $entity instanceof Teacher;
     }
 
     /**
@@ -37,7 +49,9 @@ class ExamPolicy
      */
     public function update(User $user, Exam $exam): bool
     {
-        return false;
+        $entity = $this->resolver->resolve($user);
+
+        return $entity instanceof Teacher && $entity->id === $exam->teacher_id;
     }
 
     /**
@@ -45,7 +59,19 @@ class ExamPolicy
      */
     public function delete(User $user, Exam $exam): bool
     {
-        return false;
+        $entity = $this->resolver->resolve($user);
+
+        return $entity instanceof Teacher && $entity->id === $exam->teacher_id;
+    }
+
+    /**
+     * Determine whether the user can attempt the exam.
+     */
+    public function attempt(User $user, Exam $exam): bool
+    {
+        $entity = $this->resolver->resolve($user);
+
+        return $entity instanceof Student && $entity->hasExam($exam);
     }
 
     /**
@@ -53,7 +79,9 @@ class ExamPolicy
      */
     public function restore(User $user, Exam $exam): bool
     {
-        return false;
+        $entity = $this->resolver->resolve($user);
+
+        return $entity instanceof Teacher && $entity->id === $exam->teacher_id;
     }
 
     /**
@@ -61,6 +89,8 @@ class ExamPolicy
      */
     public function forceDelete(User $user, Exam $exam): bool
     {
-        return false;
+        $entity = $user->entity();
+
+        return $entity instanceof Teacher && $entity->id === $exam->teacher_id;
     }
 }

@@ -4,22 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Exam;
-use App\Models\User;
-use Illuminate\Container\Attributes\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 class ExamController extends Controller
 {
+    use AuthorizesRequests;
+
     /*
         THIS CONTROLLER USED FOR TEACHER CONTROLLER ONLY, RESTRUCTURED AT DEV
     */
+
+/*     public function __construct()
+    {
+        $this->authorizeResource(Exam::class, 'exam', ['except' => ['index']]);
+    } */
 
     /**
      * Display a listing of the resource.
      */
     public function indexTeacher(Request $request)
     {
+
         $user = $request->user();
         $teacher = $user->teacher;
 
@@ -62,6 +68,7 @@ class ExamController extends Controller
      */
     public function create()
     {
+
         $courses = Course::with(['teachings.classroom'])
             ->whereHas('teachings', function ($q) {
                 $q->where('teacher_id', auth()->user()->teacher->id);
@@ -94,10 +101,9 @@ class ExamController extends Controller
      */
     public function edit(Exam $exam)
     {
-        $teacher = auth()->user()->teacher;
         $questions = $exam->questions->load('options');
 
-        return view('exam.edit', ['exam' => $exam, 'questions' => $questions, 'teacher' => $teacher]);
+        return view('exam.edit', ['exam' => $exam, 'questions' => $questions, 'teacher' => auth()->user()->teacher]);
     }
 
     /**
@@ -113,7 +119,6 @@ class ExamController extends Controller
      */
     public function destroy(Exam $exam)
     {
-
         $exam->delete();
 
         return redirect()->route('exams')->with('Ujian Dihapus');

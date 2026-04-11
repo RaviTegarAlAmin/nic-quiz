@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -43,6 +44,7 @@ class Student extends Model
         return $this->belongsToMany(ExamAssignment::class, 'exam_takers');
     }
 
+
     protected static function booted()
     {
 
@@ -55,6 +57,12 @@ class Student extends Model
             fn($student) =>
             Cache::forget("students.classroom_id:{$student->classroom_id}")
         );
+    }
+
+
+    public function hasExam(Exam $exam): bool
+    {
+        return $this->examAssignments()->where('exam_id', $exam->id)->exists();
     }
 
 }

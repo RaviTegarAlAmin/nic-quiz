@@ -22,7 +22,7 @@ class QuestionEditorController extends Controller
             'new_questions.*.is_rich_text' => ['nullable', 'boolean'],
             'new_questions.*.type' => ['required', 'string'],
             'new_questions.*.weight' => ['required', 'integer', 'min:1'],
-            'new_questions.*.ref_answer' => ['nullable', 'string'],
+            'new_questions.*.ref_answer' => ['nullable'],
             'new_questions.*.options' => ['nullable', 'array'],
             'new_questions.*.options.*.label' => ['required_with:new_questions.*.options', 'integer'],
             'new_questions.*.options.*.option' => ['nullable', 'string'],

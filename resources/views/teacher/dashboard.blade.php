@@ -5,7 +5,7 @@
     <div class="p-6">
         <!-- Header -->
 
-        <x-header>DASHBOARD</x-header>
+        <x-header>Dashboard</x-header>
 
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">

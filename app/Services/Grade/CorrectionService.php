@@ -183,7 +183,7 @@ class CorrectionService
             ];
         }
 
-         dd($this->similarityScores, $this->batchedEssay, $this->bulkUpdateEssay, $bulkUpdate, $bulkScoreByExamTaker, $bulkScore);
+        /*  dd($this->similarityScores, $this->batchedEssay, $this->bulkUpdateEssay, $bulkUpdate, $bulkScoreByExamTaker, $bulkScore); */
 
 
         if ($bulkUpdate != null) {
@@ -264,7 +264,8 @@ class CorrectionService
 
             //looping the rest of essay Answer
             foreach ($essayAnswers as $index => $essayAnswer) {
-                $essayAnswer['score'] = $this->similarityScores[$row_index][$index] * $questionData['weight'];
+                $normalizedSimilarity = ($this->similarityScores[$row_index][$index] + 1) / 2;
+                $essayAnswer['score'] = $normalizedSimilarity * $questionData['weight'];
                 $this->bulkUpdateEssay[$essayAnswer['exam_taker_id']][] = [
                     'id' => $essayAnswer['id'],
                     'question_id' => $questionId,
