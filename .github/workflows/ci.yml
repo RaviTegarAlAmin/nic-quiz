@@ -1,0 +1,50 @@
+name: deploy nic-quiz
+
+on:
+  push:
+    branches: [ "main" ]
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check Code
+      uses: actions/checkout@v4
+
+    - name: Deploy Code visa SSH
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+
+          whoami
+          pwd
+          php -v
+
+          #cd /var/www/nic-quiz
+
+          #php artisan down --refresh=15
+
+          #git pull origin main
+
+          #composer install --no-dev --optimize-autoloader
+
+          #php artisan migrate --force
+
+          #npm install
+          #npm run build
+
+          #php artisan optimize
+
+          #php artisan up
+          #php artisan queue:restart
+
+
+
+
+
