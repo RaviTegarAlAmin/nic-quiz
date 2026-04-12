@@ -55,7 +55,8 @@ class ProductionSeeder extends Seeder
 
         //First Test Student
         $firstClassroom = Classroom::create([
-            'name' => 'test classroom'
+            'name' => 'test classroom',
+            'capacity' => 32
         ]);
 
         $firstStudentUser = User::create([
