@@ -1,7 +1,7 @@
 @extends('layout.main')
 
 @section('main-content')
-    <div class="p-6">
+    <div class="p-6 pt-3">
         {{-- Welcoming Header --}}
         <div class="bg-secondary-400 rounded-lg shadow-xl shadow-gray-400 text-center px-6 py-12 relative overflow-hidden">
             <div class="absolute top-0 left-0">
@@ -23,11 +23,38 @@
                 </p>
             </div>
         </div>
+
+        {{-- Exam Procedure --}}
+
+
         {{-- Important Information Card --}}
 
         @if (auth()->user()->hasDefaultPassword())
             <x-alert.default-password></x-alert.default-password>
         @endif
+
+        <h2 class=" text-center font-bold text-3xl text-warning-600 mt-6 mb-6">
+            Perhatian!
+        </h2>
+
+        <x-card>
+            <ul class=" odd:text-gray-500 list-disc ml-6">
+                <li>
+                    Segera ganti password default
+                </li>
+                <li>
+                    Masuk ke menu <span class=" font-bold">
+                        Exams
+                    </span> untuk memulai ujian. Berdoa sebelum memulai
+                </li>
+                <li>
+                    Kerjakan ujian satu subjek dalam satu waktu
+                </li>
+                <li>
+                    <span class=" font-bold">Dilarang bekerja sama</span> dengan peserta lain
+                </li>
+            </ul>
+        </x-card>
 
     </div>
 @endsection
