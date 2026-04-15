@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Hash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -64,6 +65,19 @@ class User extends Authenticatable
     }
 
 
+    //Account Related Fucntion
+
+    public function hasDefaultPassword(){
+
+        if (Hash::check('password', $this->password)) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -97,4 +111,6 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
 }

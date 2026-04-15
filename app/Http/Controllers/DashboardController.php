@@ -5,10 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Str;
 
 class DashboardController extends Controller
 {
-    public function studentDashboard(){
+    public function studentDashboard(User $user){
+
+        if (Str::startsWith($user->entity()->nis, 'PPDB')) {
+            return view('student.dashboard-ppdb');
+        }
+
         return view('student.dashboard');
     }
 

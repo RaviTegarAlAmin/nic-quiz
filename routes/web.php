@@ -16,6 +16,7 @@ use App\Http\Controllers\StudentExamController;
 use App\Http\Controllers\teacher\exam\QuestionEditorController;
 use App\Http\Controllers\TeacherClassroomController;
 use App\Http\Controllers\TeacherGradeController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\EnsureTeacher;
 use App\Livewire\Student\ExamAttempt;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,11 @@ Route::post('login', [AuthController::class, 'login'])->name('login.store');
 Route::post('login/admin', [AuthController::class, 'adminLogin'])->name('login.admin.store');
 
 Route::middleware('auth')->group(function () {
+
+    //General Route
+
+    Route::get('profile', [UserController::class, 'profile'])->name('user.profile');
+    Route::patch('profile/change-password', [UserController::class, 'changePassword'])->name('user.password.change');
 
     //Student Route
 

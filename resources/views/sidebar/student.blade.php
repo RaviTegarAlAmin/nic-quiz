@@ -53,7 +53,7 @@
         @endif
     </a>
 
-    <a href="#"
+{{--     <a href="#"
         class="flex items-center rounded-lg gap-3 px-4 py-3 text-sm font-medium transition-all duration-200
         {{ request()->routeIs('grades*')
             ? 'bg-gradient-to-r from-secondary-400 to-secondary-300 text-white shadow-md'
@@ -104,6 +104,6 @@
         @if (request()->routeIs('classrooms*'))
             <span class="sr-only">active</span>
         @endif
-    </a>
+    </a> --}}
 
 </div>
