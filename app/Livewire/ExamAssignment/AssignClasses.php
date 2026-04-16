@@ -30,7 +30,7 @@ class AssignClasses extends Component
     public function rules()
     {
         return [
-            'duration' => 'required|integer|min:30',
+            'duration' => 'required|integer|min:5',
             'start_at' => 'required|date|after:now',
             'end_at' => 'required|date|after:start_at'
         ];
