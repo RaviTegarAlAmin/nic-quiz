@@ -1,7 +1,8 @@
 @extends('layout.main')
 
 @section('main-content')
-    <x-header>Daftar Ujian</x-header>
+
+    <x-header>Daftar Ujian {{ $student->classroom->name }}</x-header>
     <div class=" grid grid-cols-1 lg:grid-cols-2 gap-2">
         @foreach ($assignments as $assignment)
             <x-card class=" mb-2">

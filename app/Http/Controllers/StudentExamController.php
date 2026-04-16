@@ -16,7 +16,7 @@ class StudentExamController extends Controller
     public function index()
     {
 
-        $student = auth()->user()->student;
+        $student = auth()->user()->student->load('classroom:id,name');
 
 
         $assignments = ExamAssignment::with([
