@@ -15,7 +15,7 @@ class OpenAIEmbeddingService {
     public string $url = 'https://api.openai.com/v1/embeddings';
 
     public function __construct(){
-        $this->api_key = env('OPENAI_API_KEY');
+        $this->api_key = (string) config('services.openai.key');
     }
 
 
@@ -25,7 +25,7 @@ class OpenAIEmbeddingService {
 
         //Separating from null since  OpenAI cannot receive null value
 
-        $cleanInputs = array_values(array_filter($inputs, fn($i) => !empty($i)));
+        $cleanInputs = array_values(array_filter($inputs, fn($i) => $i !== null ));
 
         $response = Http::withToken($this->api_key)
                         ->post($this->url,[
