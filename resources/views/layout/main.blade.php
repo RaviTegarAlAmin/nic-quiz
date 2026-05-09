@@ -44,8 +44,9 @@
         </nav>
 
         <!-- main content  -->
-        <div id="main-content" class="h-svh  w-full overflow-y-auto p-4 bg-white dark:bg-neutral-950">
+        <div id="main-content" class="h-svh  w-full overflow-y-auto p-4 bg-gray-100 dark:bg-neutral-950">
             @yield('main-content')
+            {{ $slot ?? '' }}
         </div>
 
         <!-- toggle button for small screen  -->

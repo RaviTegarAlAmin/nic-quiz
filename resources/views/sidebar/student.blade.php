@@ -51,17 +51,20 @@
         @if (request()->routeIs('exams*') || request()->routeIs('student.exams*'))
             <span class="sr-only">active</span>
         @endif
+
     </a>
 
-{{--     <a href="#"
+    <a href="{{ route('student.grades.index') }} " wire:navigate
         class="flex items-center rounded-lg gap-3 px-4 py-3 text-sm font-medium transition-all duration-200
-        {{ request()->routeIs('grades*')
+        {{ request()->routeIs('grades*') || request()->routeIs('student.grades*')
             ? 'bg-gradient-to-r from-secondary-400 to-secondary-300 text-white shadow-md'
             : 'text-gray-600 hover:bg-gradient-to-r hover:from-secondary-400/10 hover:to-secondary-300/10 hover:text-secondary-400' }}
         group">
         <div
             class="p-2 rounded-lg transition-colors
-            {{ request()->routeIs('grades*') ? 'bg-white/20' : 'bg-gray-100 group-hover:bg-secondary-400/20' }}">
+            {{ request()->routeIs('grades*') || request()->routeIs('student.grades*')
+                ? 'bg-white/20'
+                : 'bg-gray-100 group-hover:bg-secondary-400/20' }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="lucide lucide-file-chart-column-icon lucide-file-chart-column">
@@ -73,13 +76,16 @@
                 <path d="M16 18v-3" />
             </svg>
         </div>
-        <span class="{{ request()->routeIs('grades*') ? 'font-semibold' : 'font-medium' }}">Grades</span>
-        @if (request()->routeIs('grades*'))
+        <span
+            class="{{ request()->routeIs('grades*') || request()->routeIs('student.grades*') ? 'font-semibold' : 'font-medium' }}">Grades</span>
+        @if (request()->routeIs('grades*') || request()->routeIs('student.grades*'))
             <span class="sr-only">active</span>
         @endif
     </a>
 
-    <a href="#"
+
+
+    {{--     <a href="#"
         class="flex items-center rounded-lg gap-3 px-4 py-3 text-sm font-medium transition-all duration-200
         {{ request()->routeIs('classrooms*')
             ? 'bg-gradient-to-r from-secondary-400 to-secondary-300 text-white shadow-md'
@@ -104,6 +110,6 @@
         @if (request()->routeIs('classrooms*'))
             <span class="sr-only">active</span>
         @endif
-    </a> --}}
+    </a>  --}}
 
 </div>
