@@ -12,6 +12,7 @@ use App\Http\Controllers\ExamAssignmentController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\student\exam\ExamAttemptConroller;
 use App\Http\Controllers\student\exam\ExamAttemptController;
+use App\Http\Controllers\student\grade\GradeController;
 use App\Http\Controllers\StudentExamController;
 use App\Http\Controllers\teacher\exam\QuestionEditorController;
 use App\Http\Controllers\TeacherClassroomController;
@@ -19,6 +20,8 @@ use App\Http\Controllers\TeacherGradeController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\EnsureTeacher;
 use App\Livewire\Student\ExamAttempt;
+use App\Livewire\Student\Grade;
+use App\Livewire\Student\Grade\Index as StudentGradeIndex;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -53,6 +56,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/exam-attempt/{examTakerId}', [ExamAttemptController::class, 'examAttempt'])->name('exam-attempt');
             Route::post('/exam-attempt/autosave', [ExamAttemptController::class, 'autoSave'])->name('exam-attempt.autosave');
             Route::post('/exam-attempt/submit', [ExamAttemptController::class, 'submitExam'])->name('exam-attempt.submit');
+        });
+        Route::prefix('grades')->group(function(){
+            Route::get('/', StudentGradeIndex::class)->name('student.grades.index');
         });
     });
 
