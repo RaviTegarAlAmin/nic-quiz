@@ -21,6 +21,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Middleware\EnsureTeacher;
 use App\Livewire\Student\ExamAttempt;
 use App\Livewire\Student\Grade;
+use App\Livewire\Student\Dashboard\Main as StudentDashboard;
 use App\Livewire\Student\Grade\Index as StudentGradeIndex;
 use Illuminate\Support\Facades\Route;
 
@@ -46,7 +47,8 @@ Route::middleware('auth')->group(function () {
     //Student Route
 
     Route::prefix('student')->middleware('student')->group(function () {
-        Route::get('dashboard', [DashboardController::class, 'studentDashboard'])->name('dashboard.student');
+        Route::get('dashboard', StudentDashboard::class)->name('student.dashboard');
+
         Route::resource('/classrooms', ClassroomController::class)->only('show');
         Route::prefix('exams')->group(function () {
             Route::get('/', [StudentExamController::class, 'index'])->name('student.exams.index');
