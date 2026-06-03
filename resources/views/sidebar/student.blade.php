@@ -2,15 +2,15 @@
 <div class="flex flex-col gap-2 overflow-y-auto pb-6">
 
 
-    <a href="{{ route('dashboard.student') }}" wire:navigate
+    <a href="{{ route('student.dashboard') }}" wire:navigate
         class="flex items-center rounded-lg gap-3 px-4 py-3 text-sm font-medium transition-all duration-200
-        {{ request()->routeIs('dashboard.student')
+        {{ request()->routeIs('student.dashboard')
             ? 'bg-gradient-to-r from-secondary-400 to-secondary-300 text-white shadow-md'
             : 'text-gray-600 hover:bg-gradient-to-r hover:from-secondary-400/10 hover:to-secondary-300/10 hover:text-secondary-400' }}
         group">
         <div
             class="p-2 rounded-lg transition-colors
-            {{ request()->routeIs('dashboard.student') ? 'bg-white/20' : 'bg-gray-100 group-hover:bg-secondary-400/20' }}">
+            {{ request()->routeIs('student.dashboard') ? 'bg-white/20' : 'bg-gray-100 group-hover:bg-secondary-400/20' }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="lucide lucide-layout-dashboard-icon lucide-layout-dashboard w-h h-5">
@@ -20,8 +20,8 @@
                 <rect width="7" height="5" x="3" y="16" rx="1" />
             </svg>
         </div>
-        <span class="{{ request()->routeIs('dashboard.student') ? 'font-semibold' : 'font-medium' }}">Dashboard</span>
-        @if (request()->routeIs('dashboard.student'))
+        <span class="{{ request()->routeIs('student.dashboard') ? 'font-semibold' : 'font-medium' }}">Dashboard</span>
+        @if (request()->routeIs('student.dashboard'))
             <span class="sr-only">active</span>
         @endif
     </a>
