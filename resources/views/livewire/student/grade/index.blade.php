@@ -114,10 +114,10 @@
                             </span>
                         </div>
 
-{{--                         <button wire:click="viewDetail({{ $exam['id'] }})"
+                         <button wire:click="viewDetail({{ $exam['id'] }})"
                             class="text-xs text-secondary-400 hover:text-secondary-500 font-medium hover:underline transition">
                             Lihat Detail
-                        </button> --}}
+                        </button>
                     </div>
                 </div>
             </div>
