@@ -17,6 +17,7 @@ class EntityResolver
             return $user->student ?? $user->teacher ?? $user->admin ?? null;
         });
 
+
         return $entity;
     }
 
