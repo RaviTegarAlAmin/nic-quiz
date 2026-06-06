@@ -20,6 +20,7 @@ use App\Http\Controllers\TeacherGradeController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\EnsureTeacher;
 use App\Livewire\Student\ExamAttempt;
+use App\Livewire\Student\Classroom\Index as StudentClassroom;
 use App\Livewire\Student\Grade;
 use App\Livewire\Student\Dashboard\Main as StudentDashboard;
 use App\Livewire\Student\Grade\Index as StudentGradeIndex;
@@ -49,7 +50,6 @@ Route::middleware('auth')->group(function () {
     Route::prefix('student')->middleware('student')->group(function () {
         Route::get('dashboard', StudentDashboard::class)->name('student.dashboard');
 
-        Route::resource('/classrooms', ClassroomController::class)->only('show');
         Route::prefix('exams')->group(function () {
             Route::get('/', [StudentExamController::class, 'index'])->name('student.exams.index');
             Route::post('/{assignment}/attempt', [StudentExamController::class, 'startAttempt'])->name('student.exams.start');
@@ -59,8 +59,13 @@ Route::middleware('auth')->group(function () {
             Route::post('/exam-attempt/autosave', [ExamAttemptController::class, 'autoSave'])->name('exam-attempt.autosave');
             Route::post('/exam-attempt/submit', [ExamAttemptController::class, 'submitExam'])->name('exam-attempt.submit');
         });
+
         Route::prefix('grades')->group(function(){
             Route::get('/', StudentGradeIndex::class)->name('student.grades.index');
+        });
+
+        Route::prefix('classrooms')->group(function (){
+            Route::get('/', StudentClassroom::class )->name('student.classrooms.index');
         });
     });
 

@@ -33,6 +33,11 @@ class Teacher extends Model
         return $this->hasMany(Question::class);
     }
 
+    public function homeroomClass()
+    {
+        return $this->hasOne(Classroom::class);
+    }
+
     //Local Query Scope
 
     //Getting courses from a teacher

@@ -28,6 +28,10 @@ class Classroom extends Model
         return $this->belongsTo(Teaching::class);
     }
 
+    public function homeroomTeacher(){
+        return $this->belongsTo(Teacher::class);
+    }
+
     //Query Builder
     protected function scopemaleStudents()
     {
