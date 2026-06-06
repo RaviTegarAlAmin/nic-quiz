@@ -84,32 +84,31 @@
     </a>
 
 
-
-    {{--     <a href="#"
+    <a href="{{ route('student.classrooms.index') }} " wire:navigate
         class="flex items-center rounded-lg gap-3 px-4 py-3 text-sm font-medium transition-all duration-200
-        {{ request()->routeIs('classrooms*')
+        {{ request()->routeIs('classrooms*') || request()->routeIs('student.classrooms*')
             ? 'bg-gradient-to-r from-secondary-400 to-secondary-300 text-white shadow-md'
             : 'text-gray-600 hover:bg-gradient-to-r hover:from-secondary-400/10 hover:to-secondary-300/10 hover:text-secondary-400' }}
         group">
         <div
             class="p-2 rounded-lg transition-colors
-            {{ request()->routeIs('classrooms*') ? 'bg-white/20' : 'bg-gray-100 group-hover:bg-secondary-400/20' }}">
+            {{ request()->routeIs('classrooms*') || request()->routeIs('student.classrooms*')
+                ? 'bg-white/20'
+                : 'bg-gray-100 group-hover:bg-secondary-400/20' }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="lucide lucide-school-icon lucide-school w-5 h-5">
-                <path d="M14 21v-3a2 2 0 0 0-4 0v3" />
-                <path d="M18 5v16" />
-                <path d="m4 6 7.106-3.79a2 2 0 0 1 1.788 0L20 6" />
+                class="lucide lucide-graduation-cap-icon lucide-graduation-cap">
                 <path
-                    d="m6 11-3.52 2.147a1 1 0 0 0-.48.854V19a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a1 1 0 0 0-.48-.853L18 11" />
-                <path d="M6 5v16" />
-                <circle cx="12" cy="9" r="2" />
+                    d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" />
+                <path d="M22 10v6" />
+                <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" />
             </svg>
         </div>
-        <span class="{{ request()->routeIs('classrooms*') ? 'font-semibold' : 'font-medium' }}">Class</span>
-        @if (request()->routeIs('classrooms*'))
+        <span
+            class="{{ request()->routeIs('classrooms*') || request()->routeIs('student.classrooms*') ? 'font-semibold' : 'font-medium' }}">Classroom</span>
+        @if (request()->routeIs('classrooms*') || request()->routeIs('student.classrooms*'))
             <span class="sr-only">active</span>
         @endif
-    </a>  --}}
+    </a>
 
 </div>
