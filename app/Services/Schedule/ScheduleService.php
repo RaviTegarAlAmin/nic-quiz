@@ -21,9 +21,9 @@ class ScheduleService
 
                 $scheduleTable[$classroom->grade][$classroom->name][$period->day][$period->code] =
                     [
-                        'start_at'  => $period->start_at,
-                        'type'      => $period->type,
-                        'course'    => null
+                        'start_at' => $period->start_at,
+                        'type' => $period->type,
+                        'course' => null
                     ];
             }
         }
@@ -35,7 +35,7 @@ class ScheduleService
     public function getAllSchedule()
     {
 
-        return DB::select(
+        $schedules = DB::select(
             ' SELECT p.day, p.start_at, p.duration, p.code as period_code, sc.id as schedule_id, te.id as teaching_id, t.name as teacher, c.name as course, c.code as course_code, cl.name as classroom , cl.grade as grade
             FROM periods as p
             INNER JOIN schedules as sc on sc.period_id = p.id
@@ -45,14 +45,15 @@ class ScheduleService
             INNER JOIN classrooms as cl on cl.id = te.classroom_id
             '
         );
-        ;
+
+        return array_map(fn($row) => (array) $row, $schedules);
 
     }
 
     public function getScheduleByClassroomId(int $classroomId)
     {
 
-        return
+        $schedules =
             DB::select(
                 'SELECT p.day, p.start_at, p.duration, p.code as period_code, sc.id as schedule_id, te.id as teaching_id, t.name as teacher, c.name as course, c.code as course_code, cl.name as classroom , cl.grade as grade
                 FROM periods as p
@@ -67,14 +68,15 @@ class ScheduleService
                 ,
                 [$classroomId]
             );
-        ;
+
+        return array_map(fn($row) => (array) $row, $schedules);
 
     }
 
     public function getScheduleByTeacherId(int $teacherId)
     {
 
-        return
+        $schedules =
             DB::select(
                 'SELECT p.day, p.start_at, p.duration, p.code as period_code, sc.id as schedule_id, te.id as teaching_id, t.name as teacher, c.name as course, c.code as course_code, cl.name as classroom , cl.grade as grade
                 FROM periods as p
@@ -90,7 +92,7 @@ class ScheduleService
                 [$teacherId]
             );
 
-        ;
+        return array_map(fn($row) => (array) $row, $schedules);
     }
 
 

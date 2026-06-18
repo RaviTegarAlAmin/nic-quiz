@@ -21,9 +21,9 @@ class AdminDashboardService
     }
 
 
-
     public function getDashboardData()
     {
+        $data = [];
         $data['stat_card'] = $this->statCard();
         $data['classroom_data'] = $this->classroomData();
         $data['schedule_data'] = $this->scheduleData();
@@ -66,29 +66,26 @@ class AdminDashboardService
             '
         );
 
-        return $data;
+        return array_map(fn($row) => (array) $row, $data);
     }
 
-    protected function scheduleData()
+    protected function scheduleData(): array
     {
-
         $scheduleTables = $this->scheduleService->createScheduleTable();
         $schedules = $this->scheduleService->getAllSchedule();
 
+
         foreach ($schedules as $schedule) {
-            $grade = $schedule->grade;
-            $classroom = $schedule->classroom;
-            $day = $schedule->day;
-            $periodCode = $schedule->period_code;
 
-            unset($schedule->grade, $schedule->classroom, $schedule->day, $schedule->period_code);
+            $grade = $schedule['grade'];
+            $classroom = $schedule['classroom'];
+            $day = $schedule['day'];
+            $periodCode = $schedule['period_code'];
 
-            $scheduleTables[$grade][$classroom][$day][$periodCode] = (array) $schedule;
+            $scheduleTables[$grade][$classroom][$day][$periodCode] = $schedule;
         }
 
         return $scheduleTables;
-
-
     }
 
 }
