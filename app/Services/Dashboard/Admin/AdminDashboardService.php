@@ -71,21 +71,7 @@ class AdminDashboardService
 
     protected function scheduleData(): array
     {
-        $scheduleTables = $this->scheduleService->createScheduleTable();
-        $schedules = $this->scheduleService->getAllSchedule();
-
-
-        foreach ($schedules as $schedule) {
-
-            $grade = $schedule['grade'];
-            $classroom = $schedule['classroom'];
-            $day = $schedule['day'];
-            $periodCode = $schedule['period_code'];
-
-            $scheduleTables[$grade][$classroom][$day][$periodCode] = $schedule;
-        }
-
-        return $scheduleTables;
+        return $this->scheduleService->getMappedSchedulesData();
     }
 
 }
