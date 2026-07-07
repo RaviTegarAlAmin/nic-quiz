@@ -10,13 +10,13 @@
         placeholder=" "
         {{ $attributes->merge([
             'class' =>
-                'peer w-full rounded-sm text-sm font-normal
-                                         pt-5 pb-1 px-2 transition
-                                         border border-secondary-100
-                                         ring-1 ring-transparent
-                                         shadow-sm hover:shadow-md
-                                         focus:outline-none focus:border-secondary-400
-                                         ' . ($errors->has($name) ? 'border-danger-500 ring-danger-300' : ''),
+                'peer w-full rounded-sm text-sm font-normal [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+                                                 pt-5 pb-1 px-2 transition
+                                                 border border-secondary-100
+                                                 ring-1 ring-transparent
+                                                 shadow-sm hover:shadow-md
+                                                 focus:outline-none focus:border-secondary-400
+                                                 ' . ($errors->has($name) ? 'border-danger-500 ring-danger-300' : ''),
         ]) }} />
 
     <label for="{{ $name }}"

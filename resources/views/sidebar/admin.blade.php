@@ -26,7 +26,7 @@
         @endif
     </a>
 
-    <a href="{{ route('admin.classrooms.index') }} " wire:navigate
+    <a href="{{ route('admin.classrooms') }} " wire:navigate
         class="flex items-center rounded-lg gap-3 px-4 py-3 text-sm font-medium transition-all duration-200
         {{ request()->routeIs('classrooms*') || request()->routeIs('admin.classrooms*')
             ? 'bg-gradient-to-r from-secondary-400 to-secondary-300 text-white shadow-md'
