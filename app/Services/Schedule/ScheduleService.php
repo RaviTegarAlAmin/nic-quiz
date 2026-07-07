@@ -4,12 +4,12 @@ namespace App\Services\Schedule;
 
 use App\Models\Classroom;
 use App\Models\Period;
-use App\Models\Schedule;
+use App\Support\Mapper\Mapper;
 use Illuminate\Support\Facades\DB;
 
 class ScheduleService
 {
-    public function createScheduleTable()
+    public function createScheduleTable(): array
     {
         $classrooms = Classroom::all();
         $periods = Period::all();
@@ -32,7 +32,57 @@ class ScheduleService
 
     }
 
-    public function getAllSchedule()
+    public function createPeriodScheduleTable(array $defaultData = []): array
+    {
+        $periods = Period::all();
+        $scheduleTable = [];
+
+        foreach ($periods as $period) {
+            $scheduleTable[$period->day][$period->code] = array_merge(
+                [
+                    'start_at' => $period->start_at,
+                    'type' => $period->type,
+                ],
+                $defaultData
+            );
+        }
+
+        return $scheduleTable;
+    }
+
+    public function getMappedSchedulesData(): array
+    {
+        return $this->mapSchedulesIntoTable(
+            $this->getAllSchedule()
+        );
+    }
+
+    public function getMappedSchedulesByClassroomId(int $classroomId): array
+    {
+        return $this->mapSchedulesByPeriod(
+            $this->getScheduleByClassroomId($classroomId),
+            [
+                'teacher' => null,
+                'course' => null,
+                'course_code' => null,
+            ]
+        );
+    }
+
+    public function getMappedSchedulesByTeacherId(int $teacherId): array
+    {
+        return $this->mapSchedulesByPeriod(
+            $this->getScheduleByTeacherId($teacherId),
+            [
+                'classroom' => null,
+                'grade' => null,
+                'course' => null,
+                'course_code' => null,
+            ]
+        );
+    }
+
+    public function getAllSchedule(): array
     {
 
         $schedules = DB::select(
@@ -46,11 +96,11 @@ class ScheduleService
             '
         );
 
-        return array_map(fn($row) => (array) $row, $schedules);
+        return Mapper::toArray($schedules);
 
     }
 
-    public function getScheduleByClassroomId(int $classroomId)
+    public function getScheduleByClassroomId(int $classroomId): array
     {
 
         $schedules =
@@ -69,11 +119,11 @@ class ScheduleService
                 [$classroomId]
             );
 
-        return array_map(fn($row) => (array) $row, $schedules);
+        return Mapper::toArray($schedules);
 
     }
 
-    public function getScheduleByTeacherId(int $teacherId)
+    public function getScheduleByTeacherId(int $teacherId): array
     {
 
         $schedules =
@@ -92,10 +142,36 @@ class ScheduleService
                 [$teacherId]
             );
 
-        return array_map(fn($row) => (array) $row, $schedules);
+        return Mapper::toArray($schedules);
     }
 
+    private function mapSchedulesIntoTable(array $schedules): array
+    {
+        $scheduleTables = $this->createScheduleTable();
 
+        foreach ($schedules as $schedule) {
+            $grade = $schedule['grade'];
+            $classroom = $schedule['classroom'];
+            $day = $schedule['day'];
+            $periodCode = $schedule['period_code'];
 
+            $scheduleTables[$grade][$classroom][$day][$periodCode] = $schedule;
+        }
 
+        return $scheduleTables;
+    }
+
+    private function mapSchedulesByPeriod(array $schedules, array $defaultData = []): array
+    {
+        $scheduleTable = $this->createPeriodScheduleTable($defaultData);
+
+        foreach ($schedules as $schedule) {
+            $day = $schedule['day'];
+            $periodCode = $schedule['period_code'];
+
+            $scheduleTable[$day][$periodCode] = $schedule;
+        }
+
+        return $scheduleTable;
+    }
 }
