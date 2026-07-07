@@ -20,6 +20,7 @@ use App\Http\Controllers\TeacherGradeController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\EnsureTeacher;
 use App\Livewire\Admin\Dashboard\Main as AdminDashboard;
+use App\Livewire\Admin\Classroom\Index as AdminClassrooms;
 use App\Livewire\Student\ExamAttempt;
 use App\Livewire\Student\Classroom\Index as StudentClassroom;
 use App\Livewire\Student\Grade;
@@ -92,9 +93,9 @@ Route::middleware('auth')->group(function () {
     Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
 
         Route::get('/dashboard', AdminDashboard::class)->name('dashboard');
+        Route::get('/classrooms', AdminClassrooms::class)->name('classrooms');
         Route::resource('/teachers', TeacherController::class);
         Route::resource('/students', StudentController::class);
-        Route::resource('/classrooms', \App\Http\Controllers\Admin\ClassroomController::class);
         Route::resource('/courses', CourseController::class);
         Route::resource('/teachings', TeachingController::class);
 
